@@ -1,0 +1,11 @@
+.layout-paragraphs-add-more-menu {
+  width: 495px !important;
+  left: 50% !important;
+  transform: translateX(-50%);
+
+  .layout-paragraphs-add-more-menu__group--content {
+    .layout-paragraphs-add-more-menu__item {
+      width: 20%;
+    }
+  }
+}

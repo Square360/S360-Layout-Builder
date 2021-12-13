@@ -1,0 +1,25 @@
+{%
+  set classes = [
+    'layout',
+    'layout--three-column',
+  ]
+%}
+{% if content %}
+  <section{{ attributes.addClass(classes) }}>
+    {{ content.custom.header }}
+    
+    <div class="layout__regions">
+      <div {{ region_attributes.first }} class="layout__region layout__region--first">
+        {{ content.first }}
+      </div>
+
+      <div {{ region_attributes.second }} class="layout__region layout__region--second">
+        {{ content.second }}
+      </div>
+
+      <div {{ region_attributes.third }} class="layout__region layout__region--third">
+        {{ content.third }}
+      </div>
+    </div>
+  </section>
+{% endif %}

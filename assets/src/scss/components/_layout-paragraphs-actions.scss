@@ -1,0 +1,18 @@
+.layout-paragraphs-actions {
+  z-index: 1000;
+
+  input {
+    &.layout-paragraphs-edit {
+      text-indent: 17px;
+      background-size: contain;
+      min-width: 63px;
+      max-width: 75px;
+    }
+
+    &.layout-paragraphs-remove {
+      text-indent: 17px;
+      background-size: contain;
+      min-width: 83px;
+    }
+  }
+}

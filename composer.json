@@ -1,0 +1,13 @@
+{
+    "name": "square360/s360_layout_builder",
+    "description": "Square360 Layout Builder",
+    "type": "drupal-module",
+    "keywords": [
+        "Drupal",
+        "Paragraph",
+        "Layouts"
+    ],
+    "license": "GPL-2.0-or-later",
+    "minimum-stability": "dev",
+    "version": "1.0.0"
+}

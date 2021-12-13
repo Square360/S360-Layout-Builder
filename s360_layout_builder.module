@@ -1,0 +1,217 @@
+<?php
+
+/**
+ * @file
+ * s360_layout_builder.module
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function s360_layout_builder_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.s360_layout_builder':
+      $output = '';
+
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('This module provides a layout paragraph and 4 layout classes with templates.') . '</p>';
+
+      $output .= '<p>&nbsp;</p>';
+      $output .= '<h3>' . t('Layout Classes') . '</h3>';
+      $output .= '<h4>' . t('S360BaseLayout') . '</h4>';
+      $output .= '<p>' . t('This class provides all the configuration options for the layouts.') . '</p>';
+      $output .= '<h5>' . t('Configuration Options') . '</h5>';
+      // $output .= '<p>' . t('Below are the function to set the configuration options.') . '</p>';
+      $output .= '<dl>';
+      $output .= '<dt>' . t('getColumnWidthOptions') . '</dt>';
+      $output .= '<dd>' . t('Return an array of key/value pairs of columns. Default [].') . '</dd>';
+      $output .= '<dt>' . t('getBackgroundColorOptions') . '</dt>';
+      $output .= '<dd>' . t('Return an array of key/value pairs of colors to use as a background color. Default [].') . '</dd>';
+      $output .= '<dt>' . t('showBackgroundImageField') . '</dt>';
+      $output .= '<dd>' . t('Return TRUE to show a background image upload field. Default FALSE.') . '</dd>';
+      $output .= '<dt>' . t('showBorderedOption') . '</dt>';
+      $output .= '<dd>' . t('Return TRUE to show the borderd checkbox field. Default FALSE.') . '</dd>';
+      $output .= '<dt>' . t('showEdgeToEdgeOption') . '</dt>';
+      $output .= '<dd>' . t('Return TRUE to show the edge to edge checkbox field. Default FALSE.') . '</dd>';
+      $output .= '<dt>' . t('showInsetOption') . '</dt>';
+      $output .= '<dd>' . t('Return TRUE to show the inset checkbox field. Default FALSE.') . '</dd>';
+      $output .= '</dl>';
+
+      $output .= '<h4>' . t('S360OneColumnLayout') . '</h4>';
+      $output .= '<p>' . t('This class inherits from S360BaseLayout and configures the showBorderedOption, showEdgeToEdgeOption and showInsetOption to TRUE.') . '</p>';
+
+      $output .= '<h4>' . t('S360AccordionLayout') . '</h4>';
+      $output .= '<p>' . t('This class inherits from S360BaseLayout.');
+
+      $output .= '<h4>' . t('S360TwoColumnLayout') . '</h4>';
+      $output .= '<p>' . t('This class inherits from S360BaseLayout and configures the getColumnWidthOptions with an array of 2 column widths.') . '</p>';
+
+      $output .= '<h4>' . t('S360ThreeColumnLayout') . '</h4>';
+      $output .= '<p>' . t('This class inherits from S360BaseLayout and configures the getColumnWidthOptions with an array of 3 column widths.') . '</p>';
+
+      $output .= '<h4>' . t('S360FourColumnLayout') . '</h4>';
+      $output .= '<p>' . t('This class inherits from S360BaseLayout.');
+
+      $output .= '<p>&nbsp;</p>';
+      $output .= '<h3>' . t('Classes') . '</h3>';
+      $output .= t('<p><code>.layout</code> is the base class name for all the layouts.</strong>.');
+
+      $output .= '<h4>' . t('Modifiers') . '</h4>';
+      $output .= '<ul>';
+      $output .= '<li>.layout--accordion</li>';
+      $output .= '<li>.layout--one-column</li>';
+      $output .= '<li>.layout--two-column</li>';
+      $output .= '<li>.layout--three-column</li>';
+      $output .= '<li>.layout--four-column</li>';
+      $output .= '</ul>';
+
+      $output .= '<h4>' . t('Elements') . '</h4>';
+      $output .= '<ul>';
+      $output .= '<li>.layout__regions</li>';
+      $output .= '<li>.layout__region</li>';
+      $output .= '<li>.layout__region--content</li>';
+      $output .= '<li>.layout__region--first</li>';
+      $output .= '<li>.layout__region--second</li>';
+      $output .= '<li>.layout__region--thrid</li>';
+      $output .= '<li>.layout__region--fourth</li>';
+      $output .= '</ul>';
+
+      $output .= '<p>&nbsp;</p>';
+
+      $output .= '<h3>' . t('Usage') . '</h3>';
+      $output .= '<p>' . t('This module <strong>DOES NOT</strong> provide any exposed layouts, they need to come from either a custom module or your theme.') . '</p>';
+      $output .= '<p>' . t('There are some reqirements that need to be following when creating the <code>*.layouts.yml</code> file.') . '</p>';
+
+      $output .= '<h4>' . t('*.layouts.yml File') . '</h4>';
+      $output .= '<p>' . t('In order to use the provided templates, you must use one of the following [provided_theme_hook]s: ');
+      $output .= '<code>s360_layout_builder_accordion, s360_layout_builder_onecol, s360_layout_builder_twocol, s360_layout_builder_threecol, s360_layout_builder_fourcol</code></p>';
+      $output .= '<code>theme_hook: [provided_theme_hook]</code></p>';
+      $output .= '<p>' . t('In order for the provided templates to work properly, you must define the following regions based on the [provided_theme_hook]: ');
+      $output .= '<h5>s360_layout_builder_accordion and s360_layout_builder_onecol</h5>';
+      $output .= '<code>regions:<br>&nbsp;&nbsp;content:<br>&nbsp;&nbsp;&nbsp;&nbsp;label: Content</code></p>';
+      $output .= '<h5>s360_layout_builder_twocol, s360_layout_builder_threecol and s360_layout_builder_fourcol</h5>';
+      $output .= '<code>regions:';
+      $output .= '<br>&nbsp;&nbsp;first:<br>&nbsp;&nbsp;&nbsp;&nbsp;label: First';
+      $output .= '<br>&nbsp;&nbsp;second:<br>&nbsp;&nbsp;&nbsp;&nbsp;label: Second';
+      $output .= '<br>&nbsp;&nbsp;thrid:<br>&nbsp;&nbsp;&nbsp;&nbsp;label: Third';
+      $output .= '<br>&nbsp;&nbsp;fourth:<br>&nbsp;&nbsp;&nbsp;&nbsp;label: Fourth</code>';
+
+      $output .= '<h4>' . t('Custom Module') . '</h4>';
+      $output .= '<p>' . t('If you\'re planning on overriding any of the Layout Classes defaults, make your sure custom layout class inheirts one of the classes outlined above.') . '</p>';
+
+      $output .= '<h4>' . t('Theme') . '</h4>';
+      $output .= '<p>' . t('If the Layout Class defaults are good as is, make sure your <code>*.layouts.yml</code> file has the <code>class:</code> proptery point to one of the classes outlined above.') . '</p>';
+
+      return $output;
+  }
+}
+
+/**
+ * Implements hook_layout_alter().
+ */
+function s360_layout_builder_layout_alter(&$definitions) {
+  $layouts_to_hide = [
+    // Remove default layout from layout_builder module.
+    'layout_twocol_section',
+    'layout_threecol_section',
+    'layout_fourcol_section',
+    // Remove default layout from layout_discovery module.
+    'layout_onecol',
+    'layout_twocol',
+    'layout_twocol_bricks',
+    'layout_threecol_25_50_25',
+    'layout_threecol_33_34_33',
+  ];
+
+  foreach ($definitions as $definition) {
+    if (in_array($definition->id(), $layouts_to_hide)) {
+      unset($definitions[$definition->id()]);
+    }
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function s360_layout_builder_theme($existing, $type, $theme, $path) {
+  $items = [];
+
+  $items['paragraph__layout'] = [
+    'template' => 'paragraph--layout' ,
+    'base hook' => 'paragraph',
+  ];
+
+  $items['s360_layout_builder_onecol'] = [
+    'template' => 's360-layout-builder--onecol',
+    'render element' => 'content',
+    'base hook' => 'layout',
+  ];
+
+  $items['s360_layout_builder_accordion'] = [
+    'template' => 's360-layout-builder--accordion',
+    'render element' => 'content',
+    'base hook' => 'layout',
+  ];
+
+  $items['s360_layout_builder_twocol'] = [
+    'template' => 's360-layout-builder--twocol',
+    'render element' => 'content',
+    'base hook' => 'layout',
+  ];
+
+  $items['s360_layout_builder_threecol'] = [
+    'template' => 's360-layout-builder--threecol',
+    'render element' => 'content',
+    'base hook' => 'layout',
+  ];
+
+  $items['s360_layout_builder_fourcol'] = [
+    'template' => 's360-layout-builder--fourcol',
+    'render element' => 'content',
+    'base hook' => 'layout',
+  ];
+
+  return $items;
+}
+
+/**
+ * Implements hook_page_attachments_alter().
+ */
+function s360_layout_builder_page_attachments_alter(array &$attachments) {
+  if (\Drupal::service('router.admin_context')->isAdminRoute()) {
+    $attachments['#attached']['library'][] = 's360_layout_builder/s360-layout-builder';
+  }
+}
+
+/**
+ * Implements hook_preprocess_paragraph() for layout.
+ */
+function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
+  if (!\Drupal::service('router.admin_context')->isAdminRoute()) {
+    $elements = $variables['elements'];
+
+    if (isset($elements['#paragraph'])) {
+      /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+      $paragraph = $elements['#paragraph'];
+
+      if ($paragraph->hasField('field_header')) {
+        $field_header = $paragraph->get('field_header');
+
+        if (!is_null($field_header->first()) && $field_header->first()->getValue()['title'] !== '') {
+          if (strpos($paragraph->getBehaviorSetting('layout_paragraphs', 'layout'), 'accordion') !== FALSE) {
+            $header = $field_header->first()->getValue()['title'];
+          }
+          else {
+            $header = $field_header->view([
+              'label' => 'hidden',
+            ]);
+          }
+
+          $variables['content']['regions']['custom']['header'] = $header;
+        }
+      }
+    }
+  }
+}

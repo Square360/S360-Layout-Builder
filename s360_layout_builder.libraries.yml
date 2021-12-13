@@ -1,0 +1,6 @@
+s360-layout-builder:
+  version: VERSION
+  css:
+    theme:
+      assets/dist/css/s360-layout-builder.min.css: {}
+      assets/dist/css/s360-layout-builder.fontawesome.min.css: {}

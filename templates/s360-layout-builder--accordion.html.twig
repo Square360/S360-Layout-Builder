@@ -1,0 +1,24 @@
+{%
+  set classes = [
+    'layout',
+    'layout--accordion',
+  ]
+%}
+{% if content %}
+  <div{{ attributes.addClass(classes) }}>
+    {% if content.custom.header %}
+      <details class="layout__details">
+        <summary class="layout__summary">{{ content.custom.header }}</summary>
+    {% endif %}
+
+    <div class="layout__regions">
+      <div {{ region_attributes.content }} class="layout__region layout__region--content">
+        {{ content.content }}
+      </div>
+    </div>
+
+    {% if content.custom.header %}
+      </details>
+    {% endif %}
+  </div>
+{% endif %}

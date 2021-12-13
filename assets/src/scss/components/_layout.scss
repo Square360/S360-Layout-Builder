@@ -1,0 +1,20 @@
+.layout {
+  &--two-column > .layout__regions,
+  &--three-column > .layout__regions,
+  &--four-column > .layout__regions {
+    display: grid;
+    gap: 5px;
+  }
+
+  &--two-column > .layout__regions {
+    grid-template-columns: 50% 50%;
+  }
+
+  &--three-column > .layout__regions {
+    grid-template-columns: 33% 33% 33%;
+  }
+
+  &--four-column > .layout__regions {
+    grid-template-columns: 25% 25% 25% 25%;
+  }
+}

@@ -1,0 +1,34 @@
+.layout-paragraphs-item {
+  border: 1px solid #999999;
+
+  .layout-paragraphs-disabled-items & {
+    border: 1px solid #999999;
+  }
+
+  &:hover > label.paragraph-type--label,
+  &:hover > label.paragraph-layout-label {
+    opacity: .25;
+    transition: all .5s ease;
+  }
+
+  label.paragraph-type--label,
+  label.paragraph-type-label {
+    @include font-awesome-icon($fa-var-cube, 'regular', 'before');
+
+    color: white;
+    background-color: #ffa00e;
+    border: none;
+    padding: .1em 1em;
+    right: unset;
+    bottom: unset;
+    top: 0;
+    left: 50%;
+    font-style: normal;
+    font-size: 83%;
+    transform: translateX(-50%);
+
+    &:hover {
+      font-style: italic;
+    }
+  }
+}
