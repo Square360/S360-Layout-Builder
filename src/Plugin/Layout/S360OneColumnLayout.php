@@ -13,22 +13,50 @@ class S360OneColumnLayout extends S360BaseLayout {
   /**
    * {@inheritdoc}
    */
-  protected function showBorderedOption() {
-    return TRUE;
+  protected function columnRatioOptions() {
+    return [];
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function showEdgeToEdgeOption() {
-    return TRUE;
+  protected function gutterWidthOptions() {
+    return [];
   }
 
   /**
    * {@inheritdoc}
    */
-  protected function showInsetOption() {
-    return TRUE;
+  protected function columnSeparatorOptions() {
+    return [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function backgroundColorOptions() {
+    return [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function showBackgroundImageField() {
+    return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function layoutWidthOptions() {
+    return $this->defaultLayoutWidthOptions();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function marginBottomOptions() {
+    return $this->defaultMarginBottomOptions();
   }
 
 }

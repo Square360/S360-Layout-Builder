@@ -12,7 +12,7 @@ use Drupal\Core\Form\FormStateInterface;
  * @internal
  *   Plugin classes are internal.
  */
-class S360BaseLayout extends LayoutDefault implements PluginFormInterface {
+abstract class S360BaseLayout extends LayoutDefault implements PluginFormInterface {
 
   /**
    * {@inheritdoc}
@@ -20,8 +20,16 @@ class S360BaseLayout extends LayoutDefault implements PluginFormInterface {
   public function defaultConfiguration() {
     $configuration = parent::defaultConfiguration();
 
-    if (count($this->columnWidthOptions())) {
-      $configuration['column_width'] = $this->setDefaultColumnWidth();
+    if (count($this->columnRatioOptions())) {
+      $configuration['column_ratio'] = $this->defaultColumnRatio();
+    }
+
+    if (count($this->gutterWidthOptions())) {
+      $configuration['gutter_width'] = $this->defaultGutterWidth();
+    }
+
+    if (count($this->columnSeparatorOptions())) {
+      $configuration['column_separator'] = '';
     }
 
     if (count($this->backgroundColorOptions())) {
@@ -32,16 +40,12 @@ class S360BaseLayout extends LayoutDefault implements PluginFormInterface {
       $configuration['background_image'] = '';
     }
 
-    if ($this->showBorderedOption()) {
-      $configuration['bordered'] = FALSE;
+    if (count($this->layoutWidthOptions())) {
+      $configuration['layout_width'] = '';
     }
 
-    if ($this->showEdgeToEdgeOption()) {
-      $configuration['edge_to_edge'] = FALSE;
-    }
-
-    if ($this->showInsetOption()) {
-      $configuration['inset'] = FALSE;
+    if (count($this->marginBottomOptions())) {
+      $configuration['margin_bottom'] = '';
     }
 
     return $configuration;
@@ -51,24 +55,35 @@ class S360BaseLayout extends LayoutDefault implements PluginFormInterface {
    * {@inheritdoc}
    */
   public function buildConfigurationForm(array $form, FormStateInterface $form_state) {
-    if (count($this->columnWidthOptions())) {
-      $form['column_width'] = [
+    if (count($this->columnRatioOptions())) {
+      $form['column_ratio'] = [
         '#type' => 'select',
-        '#title' => $this->t('Column width'),
-        '#default_value' => $this->configuration['column_width'],
-        '#options' => $this->columnWidthOptions(),
-        '#description' => $this->t('Choose the column widths for this layout.'),
+        '#title' => $this->t('Column ratio'),
+        '#default_value' => $this->configuration['column_ratio'],
+        '#options' => $this->columnRatioOptions(),
+        '#description' => $this->t('Choose the column ratio for this layout.'),
       ];
     }
 
-    if ($this->showGutterWidthOption()) {
+    if (count($this->gutterWidthOptions())) {
       $form['gutter_width'] = [
         '#type' => 'select',
         '#title' => $this->t('Gutter width'),
         '#default_value' => $this->configuration['gutter_width'],
         '#options' => $this->gutterWidthOptions(),
-        '#empty_option' => t('- Select -'),
+        '#empty_option' => $this->t('- None -'),
         '#description' => $this->t('Choose the amount of space between columns.'),
+      ];
+    }
+
+    if (count($this->columnSeparatorOptions())) {
+      $form['column_separator'] = [
+        '#type' => 'select',
+        '#title' => $this->t('Column separator'),
+        '#default_value' => $this->configuration['column_separator'],
+        '#options' => $this->columnSeparatorOptions(),
+        '#empty_option' => $this->t('- None -'),
+        '#description' => $this->t('Choose how the columns should be separated.'),
       ];
     }
 
@@ -78,6 +93,7 @@ class S360BaseLayout extends LayoutDefault implements PluginFormInterface {
         '#title' => $this->t('Background color'),
         '#default_value' => $this->configuration['background_color'],
         '#options' => $this->backgroundColorOptions(),
+        '#empty_option' => $this->t('- None -'),
         '#description' => $this->t('Choose the background for this layout.'),
       ];
     }
@@ -86,36 +102,31 @@ class S360BaseLayout extends LayoutDefault implements PluginFormInterface {
       $form['background_image'] = [
         '#type' => 'media_library',
         '#allowed_bundles' => ['image'],
-        '#title' => t('Background image'),
+        '#title' => $this->t('Background image'),
         '#default_value' => $this->configuration['background_image'],
-        '#description' => t('Upload or select a background image.'),
+        '#description' => $this->t('Upload or select a background image.'),
       ];
     }
 
-    if ($this->showBorderedOption()) {
-      $form['bordered'] = [
-        '#type' => 'checkbox',
-        '#title' => $this->t('Border Children'),
-        '#default_value' => $this->configuration['bordered'],
-        '#description' => $this->t('When checked all children will have a border.'),
+    if (count($this->layoutWidthOptions())) {
+      $form['layout_width'] = [
+        '#type' => 'select',
+        '#title' => $this->t('Layout width'),
+        '#default_value' => $this->configuration['layout_width'],
+        '#options' => $this->layoutWidthOptions(),
+        '#empty_option' => $this->t('Normal'),
+        '#description' => $this->t('Choose how wide the layout should be.'),
       ];
     }
 
-    if ($this->showEdgeToEdgeOption()) {
-      $form['edge_to_edge'] = [
-        '#type' => 'checkbox',
-        '#title' => $this->t('Edge to Edge'),
-        '#default_value' => $this->configuration['edge_to_edge'],
-        '#description' => $this->t('When checked this layout will span the entire width of the page.'),
-      ];
-    }
-
-    if ($this->showInsetOption()) {
-      $form['inset'] = [
-        '#type' => 'checkbox',
-        '#title' => $this->t('Inset'),
-        '#default_value' => $this->configuration['inset'],
-        '#description' => $this->t('When checked this layout will be inset.'),
+    if (count($this->marginBottomOptions())) {
+      $form['margin_bottom'] = [
+        '#type' => 'select',
+        '#title' => $this->t('Margin bottom'),
+        '#default_value' => $this->configuration['margin_bottom'],
+        '#options' => $this->marginBottomOptions(),
+        '#empty_option' => $this->t('- None -'),
+        '#description' => $this->t('Choose the amount of space beneath the layout.'),
       ];
     }
 
@@ -128,8 +139,16 @@ class S360BaseLayout extends LayoutDefault implements PluginFormInterface {
   public function submitConfigurationForm(array &$form, FormStateInterface $form_state) {
     parent::submitConfigurationForm($form, $form_state);
 
-    if (count($this->columnWidthOptions())) {
-      $this->configuration['column_width'] = $form_state->getValue('column_width');
+    if (count($this->columnRatioOptions())) {
+      $this->configuration['column_ratio'] = $form_state->getValue('column_ratio');
+    }
+
+    if (count($this->gutterWidthOptions())) {
+      $this->configuration['gutter_width'] = $form_state->getValue('gutter_width');
+    }
+
+    if (count($this->columnSeparatorOptions())) {
+      $this->configuration['column_separator'] = $form_state->getValue('column_separator');
     }
 
     if (count($this->backgroundColorOptions())) {
@@ -140,16 +159,12 @@ class S360BaseLayout extends LayoutDefault implements PluginFormInterface {
       $this->configuration['background_image'] = $form_state->getValue('background_image');
     }
 
-    if ($this->showBorderedOption()) {
-      $this->configuration['bordered'] = $form_state->getValue('bordered');
+    if (count($this->layoutWidthOptions())) {
+      $this->configuration['layout_width'] = $form_state->getValue('layout_width');
     }
 
-    if ($this->showEdgeToEdgeOption()) {
-      $this->configuration['edge_to_edge'] = $form_state->getValue('edge_to_edge');
-    }
-
-    if ($this->showInsetOption()) {
-      $this->configuration['inset'] = $form_state->getValue('inset');
+    if (count($this->marginBottomOptions())) {
+      $this->configuration['margin_bottom'] = $form_state->getValue('margin_bottom');
     }
   }
 
@@ -159,8 +174,20 @@ class S360BaseLayout extends LayoutDefault implements PluginFormInterface {
   public function build(array $regions) {
     $build = parent::build($regions);
 
-    if (count($this->columnWidthOptions())) {
-      $build['#attributes']['class'][] = 'layout--' . $this->configuration['column_width'];
+    if (count($this->columnRatioOptions())) {
+      $build['#attributes']['class'][] = 'layout--' . $this->configuration['column_ratio'];
+    }
+
+    if (count($this->gutterWidthOptions())) {
+      if ($this->configuration['gutter_width'] !== '') {
+        $build['#attributes']['class'][] = 'layout--' . $this->configuration['gutter_width'];
+      }
+    }
+
+    if (count($this->columnSeparatorOptions())) {
+      if ($this->configuration['column_separator'] !== '') {
+        $build['#attributes']['class'][] = 'layout--' . $this->configuration['column_separator'];
+      }
     }
 
     if (count($this->backgroundColorOptions())) {
@@ -186,21 +213,15 @@ class S360BaseLayout extends LayoutDefault implements PluginFormInterface {
       }
     }
 
-    if ($this->showBorderedOption()) {
-      if ($this->configuration['bordered'] === 1) {
-        $build['#attributes']['class'][] = 'layout--bordered';
+    if (count($this->layoutWidthOptions())) {
+      if ($this->configuration['layout_width'] !== '') {
+        $build['#attributes']['class'][] = 'layout--' . $this->configuration['layout_width'];
       }
     }
 
-    if ($this->showEdgeToEdgeOption()) {
-      if ($this->configuration['edge_to_edge'] === 1) {
-        $build['#attributes']['class'][] = 'layout--edge-to-edge';
-      }
-    }
-
-    if ($this->showInsetOption()) {
-      if ($this->configuration['inset'] === 1) {
-        $build['#attributes']['class'][] = 'layout--inset';
+    if (count($this->marginBottomOptions())) {
+      if ($this->configuration['margin_bottom'] !== '') {
+        $build['#attributes']['class'][] = 'layout--' . $this->configuration['margin_bottom'];
       }
     }
 
@@ -208,102 +229,160 @@ class S360BaseLayout extends LayoutDefault implements PluginFormInterface {
   }
 
   /**
-   * Gets the width options for the configuration form.
+   * Define the column ratio options for the configuration form.
    *
-   * The first option will be used as the default 'column_width' configuration
+   * The first option will be used as the default 'column_ratio' configuration
    * value.
    *
    * @return string[]
-   *   The width options array where the keys are strings that will be added to
-   *   the CSS classes and the values are the human readable labels.
+   *   The column ration options array where the keys are strings that will be
+   *   added to the CSS classes and the values are the human readable labels.
    */
-  protected function columnWidthOptions() {
-    return [];
-  }
+  abstract protected function columnRatioOptions();
 
   /**
-   * Provides a default value for the width options.
-   *
-   * @return string
-   *   A key from the array returned by ::getColumnWidthOptions().
-   */
-  protected function setDefaultColumnWidth() {
-    // Return the first available key from the list of options.
-    $width_classes = array_keys($this->columnWidthOptions());
-    return array_shift($width_classes);
-  }
-
-  /**
-   * Create an array of gutter width options for the configuration form.
+   * Define the gutter width options for the configuration form.
    *
    * @return string[]
-   *   The width options array where the keys are strings that will be added to
-   *   the CSS classes and the values are the human readable labels.
+   *   The gutter width options array where the keys are strings that will be
+   *   added to the CSS classes and the values are the human readable labels.
    */
-  protected function gutterWidthOptions() {
-    return [
-      'sm' => 'Small',
-      'md' => 'Medium',
-      'lg' => 'Large',
-    ];
-  }
-
-  protected function showGutterWidthOption() {
-    return FALSE;
-  }
+  abstract protected function gutterWidthOptions();
 
   /**
-   * Get the background color options for the configuration form.
+   * Define the column separator options for the configuration form.
    *
-   * The first option will be used as the default 'background_color'
-   * configuration value.
+   * @return string[]
+   *   The column separator options array where the keys are strings that will
+   *   be added to the CSS classes and the values are the human readable labels.
+   */
+  abstract protected function columnSeparatorOptions();
+
+  /**
+   * Define the background color options for the configuration form.
    *
    * @return string[]
    *   The background color options array where the keys are strings that will
    *   be added to the CSS classes and the values are the human readable labels.
    */
-  protected function backgroundColorOptions() {
-    return [];
+  abstract protected function backgroundColorOptions();
+
+  /**
+   * Show or hide the "Background image" field.
+   *
+   * @return bool
+   *   Show the field in the configuration form when TRUE, hide when FALSE.
+   */
+  abstract protected function showBackgroundImageField();
+
+  /**
+   * Define the layout width options for the configuration form.
+   *
+   * @return string[]
+   *   The layout width options array where the keys are strings that will be
+   *   added to the CSS classes and the values are the human readable labels.
+   */
+  abstract protected function layoutWidthOptions();
+
+  /**
+   * Define the margin bottom options for the configuration form.
+   *
+   * @return string[]
+   *   The margin bottom options array where the keys are strings that will be
+   *   added to the CSS classes and the values are the human readable labels.
+   */
+  abstract protected function marginBottomOptions();
+
+  /**
+   * Provides a default value for the column ratio options.
+   *
+   * @return string
+   *   A key from the array returned by ::columnRatioOptions().
+   */
+  protected function defaultColumnRatio() {
+    // Return the first available key from the list of options.
+    $column_ratio_classes = array_keys($this->columnRatioOptions());
+    return array_shift($column_ratio_classes);
   }
 
   /**
-   * Sets whether or not the background image upload shows in the configuration.
+   * Provides a default value for the gutter width options.
    *
-   * @return bool
-   *   Show the option in the configuration form when TRUE, hide when FALSE.
+   * @return string
+   *   A key from the array returned by ::gutterWidthOptions().
    */
-  protected function showBackgroundImageField() {
-    return FALSE;
+  protected function defaultGutterWidth() {
+    // Return the first available key from the list of options.
+    $gutter_width_classes = array_keys($this->gutterWidthOptions());
+    return array_shift($gutter_width_classes);
   }
 
   /**
-   * Sets whether or not the bordered checkbox shows in the configuration.
+   * Provide default gutter width options.
    *
-   * @return bool
-   *   Show the option in the configuration form when TRUE, hide when FALSE.
+   * @final
+   *
+   * @return string[]
+   *   The gutter width options array where the keys are strings that will be
+   *   added to the CSS classes and the values are the human readable labels.
    */
-  protected function showBorderedOption() {
-    return FALSE;
+  final protected function defaultGutterWidthOptions() {
+    return [
+      'gutter-sm' => $this->t('Small'),
+      'gutter-md' => $this->t('Medium'),
+      'gutter-lg' => $this->t('Large'),
+    ];
   }
 
   /**
-   * Sets whether or not the edge to edge checkbox shows in the configuration.
+   * Provide default column separator options.
    *
-   * @return bool
-   *   Show the option in the configuration form when TRUE, hide when FALSE.
+   * @final
+   *
+   * @return string[]
+   *   The column separator options array where the keys are strings that will
+   *   be added to the CSS classes and the values are the human readable labels.
    */
-  protected function showEdgeToEdgeOption() {
-    return FALSE;
+  final protected function defaultColumnSeparatorOptions() {
+    return [
+      'column-separator-border' => $this->t('Border'),
+      'column-separator-divider' => $this->t('Divider'),
+    ];
   }
 
   /**
-   * Sets whether or not the inset checkbox shows in the configuration.
+   * Provide default layout width options.
    *
-   * @return bool
-   *   Show the option in the configuration form when TRUE, hide when FALSE.
+   * @final
+   *
+   * @return string[]
+   *   The layout width options array where the keys are strings that will be
+   *   added to the CSS classes and the values are the human readable labels.
    */
-  protected function showInsetOption() {
-    return FALSE;
+  final protected function defaultLayoutWidthOptions() {
+    return [
+      'edge-to-edge' => $this->t('Edge to Edge'),
+      'inset-sm' => $this->t('Inset Small'),
+      'inset-md' => $this->t('Inset Medium'),
+      'inset-lg' => $this->t('Inset Large'),
+    ];
+  }
+
+  /**
+   * Provide default margin bottom options.
+   *
+   * @final
+   *
+   * @return string[]
+   *   The margin bottom options array where the keys are strings that will be
+   *   added to the CSS classes and the values are the human readable labels.
+   */
+  final protected function defaultMarginBottomOptions() {
+    return [
+      'margin-bottom-sm' => $this->t('Small'),
+      'margin-bottom-md' => $this->t('Medium'),
+      'margin-bottom-lg' => $this->t('Large'),
+    ];
   }
 
 }

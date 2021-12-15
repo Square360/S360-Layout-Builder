@@ -10,14 +10,10 @@ namespace Drupal\s360_layout_builder\Plugin\Layout;
  */
 class S360TwoColumnLayout extends S360BaseLayout {
 
-  protected function showGutterWidthOption() {
-    return TRUE;
-  }
-
   /**
    * {@inheritdoc}
    */
-  protected function columnWidthOptions() {
+  protected function columnRatioOptions() {
     return [
       '50-50' => '50%/50%',
       '60-40' => '60%/40%',
@@ -32,8 +28,43 @@ class S360TwoColumnLayout extends S360BaseLayout {
   /**
    * {@inheritdoc}
    */
-  protected function setDefaultColumnWidth() {
-    return '50-50';
+  protected function gutterWidthOptions() {
+    return $this->defaultGutterWidthOptions();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function columnSeparatorOptions() {
+    return $this->defaultColumnSeparatorOptions();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function backgroundColorOptions() {
+    return [];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function showBackgroundImageField() {
+    return FALSE;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function layoutWidthOptions() {
+    return $this->defaultLayoutWidthOptions();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  protected function marginBottomOptions() {
+    return $this->defaultMarginBottomOptions();
   }
 
 }
