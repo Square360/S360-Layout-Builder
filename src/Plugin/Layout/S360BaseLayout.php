@@ -45,7 +45,7 @@ abstract class S360BaseLayout extends LayoutDefault implements PluginFormInterfa
     }
 
     if (count($this->marginBottomOptions())) {
-      $configuration['margin_bottom'] = '';
+      $configuration['margin_bottom'] = $this->defaultMarginBottom();
     }
 
     return $configuration;
@@ -180,13 +180,13 @@ abstract class S360BaseLayout extends LayoutDefault implements PluginFormInterfa
 
     if (count($this->gutterWidthOptions())) {
       if ($this->configuration['gutter_width'] !== '') {
-        $build['#attributes']['class'][] = 'layout--' . $this->configuration['gutter_width'];
+        $build['#attributes']['class'][] = 'layout--gutter-' . $this->configuration['gutter_width'];
       }
     }
 
     if (count($this->columnSeparatorOptions())) {
       if ($this->configuration['column_separator'] !== '') {
-        $build['#attributes']['class'][] = 'layout--' . $this->configuration['column_separator'];
+        $build['#attributes']['class'][] = 'layout--column-separator-' . $this->configuration['column_separator'];
       }
     }
 
@@ -215,13 +215,13 @@ abstract class S360BaseLayout extends LayoutDefault implements PluginFormInterfa
 
     if (count($this->layoutWidthOptions())) {
       if ($this->configuration['layout_width'] !== '') {
-        $build['#attributes']['class'][] = 'layout--' . $this->configuration['layout_width'];
+        $build['#attributes']['class'][] = 'layout--width-' . $this->configuration['layout_width'];
       }
     }
 
     if (count($this->marginBottomOptions())) {
       if ($this->configuration['margin_bottom'] !== '') {
-        $build['#attributes']['class'][] = 'layout--' . $this->configuration['margin_bottom'];
+        $build['#attributes']['class'][] = 'layout--margin-bottom-' . $this->configuration['margin_bottom'];
       }
     }
 
@@ -294,7 +294,7 @@ abstract class S360BaseLayout extends LayoutDefault implements PluginFormInterfa
   abstract protected function marginBottomOptions();
 
   /**
-   * Provides a default value for the column ratio options.
+   * Provides a default value for the column ratio option.
    *
    * @return string
    *   A key from the array returned by ::columnRatioOptions().
@@ -306,7 +306,7 @@ abstract class S360BaseLayout extends LayoutDefault implements PluginFormInterfa
   }
 
   /**
-   * Provides a default value for the gutter width options.
+   * Provides a default value for the gutter width option.
    *
    * @return string
    *   A key from the array returned by ::gutterWidthOptions().
@@ -315,6 +315,18 @@ abstract class S360BaseLayout extends LayoutDefault implements PluginFormInterfa
     // Return the first available key from the list of options.
     $gutter_width_classes = array_keys($this->gutterWidthOptions());
     return array_shift($gutter_width_classes);
+  }
+
+  /**
+   * Provides a default value for the margin bottom options.
+   *
+   * @return string
+   *   A key from the array returned by ::marginBottomOptions().
+   */
+  protected function defaultMarginBottom() {
+    // Return the first available key from the list of options.
+    $margin_bottom_classes = array_keys($this->marginBottomOptions());
+    return array_shift($margin_bottom_classes);
   }
 
   /**
@@ -328,9 +340,9 @@ abstract class S360BaseLayout extends LayoutDefault implements PluginFormInterfa
    */
   final protected function defaultGutterWidthOptions() {
     return [
-      'gutter-sm' => $this->t('Small'),
-      'gutter-md' => $this->t('Medium'),
-      'gutter-lg' => $this->t('Large'),
+      'sm' => $this->t('Small'),
+      'md' => $this->t('Medium'),
+      'lg' => $this->t('Large'),
     ];
   }
 
@@ -345,8 +357,8 @@ abstract class S360BaseLayout extends LayoutDefault implements PluginFormInterfa
    */
   final protected function defaultColumnSeparatorOptions() {
     return [
-      'column-separator-border' => $this->t('Border'),
-      'column-separator-divider' => $this->t('Divider'),
+      'border' => $this->t('Border'),
+      'divider' => $this->t('Divider'),
     ];
   }
 
@@ -379,9 +391,9 @@ abstract class S360BaseLayout extends LayoutDefault implements PluginFormInterfa
    */
   final protected function defaultMarginBottomOptions() {
     return [
-      'margin-bottom-sm' => $this->t('Small'),
-      'margin-bottom-md' => $this->t('Medium'),
-      'margin-bottom-lg' => $this->t('Large'),
+      'sm' => $this->t('Small'),
+      'md' => $this->t('Medium'),
+      'lg' => $this->t('Large'),
     ];
   }
 
