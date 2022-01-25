@@ -192,8 +192,8 @@ abstract class S360BaseLayout extends LayoutDefault implements PluginFormInterfa
 
     if (count($this->backgroundColorOptions())) {
       if ($this->configuration['background_color'] !== '') {
-        $build['#attributes']['class'][] = 'layout--background-color';
-        $build['#attributes']['class'][] = 'layout--background-color-' . $this->configuration['background_color'];
+        $build['#attributes']['class'][] = 'layout--background';
+        $build['#attributes']['class'][] = $this->configuration['background_color'];
       }
     }
 
@@ -208,8 +208,8 @@ abstract class S360BaseLayout extends LayoutDefault implements PluginFormInterfa
         /** @var \Drupal\file\Entity\File $file */
         $file = $media_image_field->entity;
 
+        $build['#attributes']['class'][] = 'layout--background';
         $build['#attributes']['style'][] = 'background-image:url(' . file_create_url($file->uri->value) . ')';
-        $build['#attributes']['class'][] = 'layout--background-image';
       }
     }
 
