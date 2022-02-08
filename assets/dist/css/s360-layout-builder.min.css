@@ -1,7 +1,7 @@
 /*!
  * @client: Square360
  * @version: 1.0.0
- * @build: 2021-11-16 | 083542
+ * @build: 2022-02-08 | 075302
  */
 @charset "UTF-8";
 .layout--two-column > .layout__regions, .layout--three-column > .layout__regions, .layout--four-column > .layout__regions {
@@ -20,6 +20,16 @@
 .layout--four-column > .layout__regions {
   -ms-grid-columns: 25% 25% 25% 25%;
   grid-template-columns: 25% 25% 25% 25%;
+}
+
+.layout-paragraphs-form #layout-config .details-wrapper {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (1fr)[3];
+  grid-template-columns: repeat(3, 1fr);
+}
+.layout-paragraphs-form #layout-config .details-wrapper *:last-child {
+  grid-column: 1/-1;
 }
 
 .field--widget-layout-paragraphs .layout-paragraphs-actions {
