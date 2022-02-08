@@ -1,0 +1,12 @@
+.layout-paragraphs-form {
+  #layout-config {
+    .details-wrapper {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+
+      *:last-child {
+        grid-column: 1/-1;
+      }
+    }
+  }
+}
