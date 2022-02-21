@@ -1,0 +1,32 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1">
+<metadata>
+Created by FontForge 20201107 at Fri Feb 18 15:33:18 2022
+ By root
+Copyright (c) Font Awesome
+</metadata>
+<!-- Font Awesome Pro 5.15.4 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) --><defs>
+<font id="FontAwesome5Pro-Regular" horiz-adv-x="512" >
+  <font-face 
+    font-family="Font Awesome 5 Pro Regular"
+    font-weight="400"
+    font-stretch="normal"
+    units-per-em="512"
+    panose-1="2 0 5 3 0 0 0 0 0 0"
+    ascent="448"
+    descent="-64"
+    bbox="0 -59.5999 512 443.562"
+    underline-thickness="25"
+    underline-position="-50"
+    unicode-range="U+0020-F1B2"
+  />
+    <missing-glyph />
+    <glyph glyph-name="th-large" unicode="&#xf009;" 
+d="M0 368c0 26.5098 21.4902 48 48 48h416c26.5098 0 48 -21.4902 48 -48v-352c0 -26.5098 -21.4902 -48 -48 -48h-416c-26.5098 0 -48 21.4902 -48 48v352zM232 368h-178c-3.31152 0 -6 -2.68848 -6 -6v-146h184v152zM48 168v-146c0 -3.31152 2.68848 -6 6 -6h178v152h-184
+zM280 16h178c3.31152 0 6 2.68848 6 6v146h-184v-152zM464 216v146c0 3.31152 -2.68848 6 -6 6h-178v-152h184z" />
+    <glyph glyph-name="cube" unicode="&#xf1b2;" 
+d="M239.1 440.5c10.9004 4.09961 22.9004 4.09961 33.7002 -0.0996094l208 -78c18.7002 -7 31.1006 -24.9004 31.1006 -44.9004v-225.1c0 -18.1006 -10.2002 -34.8008 -26.5 -42.9004l-208 -104c-13.5 -6.7998 -29.4004 -6.7998 -42.9004 0l-208 104
+c-16.2002 8.09961 -26.5 24.7002 -26.5 42.9004v225.1c0 20 12.4004 38 31.0996 45zM256 395.5l-208 -78v-0.299805l208 -84.5l208 84.5v0.299805zM48 265.4v-173l184 -92v190.199zM280 0.5l184 92v172.9l-184 -74.8008v-190.1z" />
+  </font>
+</defs></svg>

@@ -5,7 +5,7 @@
       grid-template-columns: repeat(3, 1fr);
 
       *:last-child {
-        grid-column: 1/-1;
+        grid-column: 1 / -1;
       }
     }
   }
