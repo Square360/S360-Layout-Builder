@@ -78,7 +78,7 @@ function s360_layout_builder_theme($existing, $type, $theme, $path) {
  */
 function s360_layout_builder_page_attachments_alter(array &$attachments) {
   if (\Drupal::service('router.admin_context')->isAdminRoute()) {
-    $attachments['#attached']['library'][] = 's360_layout_builder/s360-layout-builder';
+    $attachments['#attached']['library'][] = 's360_layout_builder/s360_layout_builder.admin';
   }
 }
 

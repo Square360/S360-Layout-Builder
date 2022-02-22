@@ -1,5 +1,5 @@
-s360-layout-builder:
+s360_layout_builder.admin:
   version: VERSION
   css:
     theme:
-      assets/dist/css/s360-layout-builder.min.css: {}
+      assets/dist/css/s360-layout-builder.admin.min.css: {}
