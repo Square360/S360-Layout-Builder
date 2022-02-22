@@ -15,11 +15,14 @@
     "last 2 version"
   ],
   "scripts": {
-    "start": "node_modules/.bin/sass --watch --trace ./src/scss/s360-layout-builder.scss ./dist/css/s360-layout-builder.min.css",
-    "build": "node_modules/.bin/sass ./src/scss/s360-layout-builder.scss ./dist/css/s360-layout-builder.min.css"
+    "start": "yarn build --watch",
+    "build": "node_modules/.bin/sass ./src/scss/s360-layout-builder.admin.scss ./dist/css/s360-layout-builder.admin.min.css --trace",
+    "build:prod": "yarn build; yarn uglifycss",
+    "uglifycss": "node_modules/.bin/uglifycss ./dist/css/s360-layout-builder.admin.min.css --output ./dist/css/s360-layout-builder.admin.min.css"
   },
   "devDependencies": {
-    "sass": "1.32.8"
+    "sass": "1.32.8",
+    "uglifycss": "^0.0.29"
   },
   "dependencies": {
     "s360-fundamental-toolkit": "git+https://bitbucket.org/sq360_sysadmin/s360-fundamental-toolkit.git#6.0.0"
