@@ -1,9 +1,10 @@
+// Update styling to show the layout regions in a grid.
 .layout {
   &--two-column > .layout__regions,
   &--three-column > .layout__regions,
   &--four-column > .layout__regions {
     display: grid;
-    gap: 5px;
+    gap: 10px;
   }
 
   &--two-column > .layout__regions {
