@@ -18,4 +18,10 @@
   &--four-column > .layout__regions {
     grid-template-columns: 25% 25% 25% 25%;
   }
+
+  &--background {
+    &[style^="background-image"] {
+      color: #ffffff;
+    }
+  }
 }

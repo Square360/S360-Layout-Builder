@@ -1,3 +1,5 @@
+/// Update styling for layouts and their region/items.
+
 .layout-paragraphs-item {
   // Common across layout and item labels
   label {
@@ -11,6 +13,7 @@
     font-style: normal;
     font-size: 83%;
     transform: translateX(-50%);
+    display: block;
   }
 
   // Put some extra space between items.
@@ -101,17 +104,3 @@
     }
   }
 }
-
-//   /// **************************************************
-//   /// When regions are disabled.
-
-//   .layout-paragraphs-disabled-items & {
-//     .layout-paragraphs-field & {
-//       border-color: #5d749c;
-//     }
-
-//     .layout-paragraphs-add-content__toggle {
-//       display: none;
-//     }
-//   }
-// }
