@@ -33,44 +33,37 @@ function s360_layout_builder_layout_alter(&$definitions) {
  * Implements hook_theme().
  */
 function s360_layout_builder_theme($existing, $type, $theme, $path) {
-  $items = [];
-
-  $items['paragraph__layout'] = [
-    'template' => 'paragraph--layout' ,
-    'base hook' => 'paragraph',
+  return [
+    'paragraph__layout' => [
+      'template' => 'paragraph--layout' ,
+      'base hook' => 'paragraph',
+    ],
+    's360_layout_builder_onecol' => [
+      'template' => 's360-layout-builder--onecol',
+      'render element' => 'content',
+      'base hook' => 'layout',
+    ],
+    's360_layout_builder_accordion' => [
+      'template' => 's360-layout-builder--accordion',
+      'render element' => 'content',
+      'base hook' => 'layout',
+    ],
+    's360_layout_builder_twocol' => [
+      'template' => 's360-layout-builder--twocol',
+      'render element' => 'content',
+      'base hook' => 'layout',
+    ],
+    's360_layout_builder_threecol' => [
+      'template' => 's360-layout-builder--threecol',
+      'render element' => 'content',
+      'base hook' => 'layout',
+    ],
+    's360_layout_builder_fourcol' => [
+      'template' => 's360-layout-builder--fourcol',
+      'render element' => 'content',
+      'base hook' => 'layout',
+    ],
   ];
-
-  $items['s360_layout_builder_onecol'] = [
-    'template' => 's360-layout-builder--onecol',
-    'render element' => 'content',
-    'base hook' => 'layout',
-  ];
-
-  $items['s360_layout_builder_accordion'] = [
-    'template' => 's360-layout-builder--accordion',
-    'render element' => 'content',
-    'base hook' => 'layout',
-  ];
-
-  $items['s360_layout_builder_twocol'] = [
-    'template' => 's360-layout-builder--twocol',
-    'render element' => 'content',
-    'base hook' => 'layout',
-  ];
-
-  $items['s360_layout_builder_threecol'] = [
-    'template' => 's360-layout-builder--threecol',
-    'render element' => 'content',
-    'base hook' => 'layout',
-  ];
-
-  $items['s360_layout_builder_fourcol'] = [
-    'template' => 's360-layout-builder--fourcol',
-    'render element' => 'content',
-    'base hook' => 'layout',
-  ];
-
-  return $items;
 }
 
 /**
@@ -96,9 +89,9 @@ function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
       if ($paragraph->hasField('field_header')) {
         $field_header = $paragraph->get('field_header');
 
-        if (!is_null($field_header->first()) && $field_header->first()->getValue()['title'] !== '') {
+        if ($field_header->title !== '') {
           if (strpos($paragraph->getBehaviorSetting('layout_paragraphs', 'layout'), 'accordion') !== FALSE) {
-            $header = $field_header->first()->getValue()['title'];
+            $header = $field_header->title;
           }
           else {
             $header = $field_header->view([
@@ -106,7 +99,12 @@ function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
             ]);
           }
 
-          $variables['content']['regions']['custom']['header'] = $header;
+          $variables['content']['regions']['header'] = $header;
+
+          // Only add "aria-labelledby" attribute if there is an heading_id.
+          if ($field_header->heading_id !== NULL) {
+            $variables['content']['regions']['#attributes']['aria-labelledby'] = $field_header->heading_id;
+          }
         }
       }
     }
