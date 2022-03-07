@@ -1,11 +1,29 @@
+/// Update styling for the add paragraphs popups.
 .layout-paragraphs-add-more-menu {
-  width: 495px !important;
-  left: 50% !important;
-  transform: translateX(-50%);
+  width: 100%;
 
-  .layout-paragraphs-add-more-menu__group--content {
-    .layout-paragraphs-add-more-menu__item {
-      width: 20%;
+  .layout-paragraphs-add-more-menu__group {
+    padding: 20px;
+
+    &--layout,
+    &--content {
+      gap: 20px;
+
+      .layout-paragraphs-add-more-menu__item {
+        width: fit-content;
+
+        a {
+          padding: 20px;
+          margin: 0;
+          line-height: 1;
+        }
+
+        img {
+          width: 44px;
+          height: 44px;
+          margin-bottom: 0.25em;
+        }
+      }
     }
   }
 }
