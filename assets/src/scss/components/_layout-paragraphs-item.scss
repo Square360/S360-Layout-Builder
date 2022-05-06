@@ -103,4 +103,10 @@
       display: none;
     }
   }
+
+}
+
+.layout-paragraphs-field .layout-paragraphs-item:hover > .layout-paragraphs-actions {
+  background-color: #ffffffcc;
+  z-index: 100;
 }
