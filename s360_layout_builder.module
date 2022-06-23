@@ -110,3 +110,13 @@ function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
     }
   }
 }
+
+/**
+ * Implements hook_modules_installed().
+ */
+function s360_layout_builder_modules_installed() {
+  $config = \Drupal::service('config.factory')->getEditable('layout_paragraphs.settings');
+
+  $config->set('show_paragraph_labels', 1)->save();
+  $config->set('show_layout_labels', 1);
+}
