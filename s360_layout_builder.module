@@ -6,30 +6,6 @@
  */
 
 /**
- * Implements hook_layout_alter().
- */
-function s360_layout_builder_layout_alter(&$definitions) {
-  $layouts_to_hide = [
-    // Remove default layout from layout_builder module.
-    'layout_twocol_section',
-    'layout_threecol_section',
-    'layout_fourcol_section',
-    // Remove default layout from layout_discovery module.
-    'layout_onecol',
-    'layout_twocol',
-    'layout_twocol_bricks',
-    'layout_threecol_25_50_25',
-    'layout_threecol_33_34_33',
-  ];
-
-  foreach ($definitions as $definition) {
-    if (in_array($definition->id(), $layouts_to_hide)) {
-      unset($definitions[$definition->id()]);
-    }
-  }
-}
-
-/**
  * Implements hook_theme().
  */
 function s360_layout_builder_theme($existing, $type, $theme, $path) {
@@ -71,7 +47,7 @@ function s360_layout_builder_theme($existing, $type, $theme, $path) {
  */
 function s360_layout_builder_page_attachments_alter(array &$attachments) {
   if (\Drupal::service('router.admin_context')->isAdminRoute()) {
-    $attachments['#attached']['library'][] = 's360_layout_builder/s360_layout_builder.admin';
+    $attachments['#attached']['library'][] = 's360_layout_builder/admin';
   }
 }
 
