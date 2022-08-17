@@ -57,7 +57,7 @@ function s360_layout_builder_page_attachments_alter(array &$attachments) {
 function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
   if (!\Drupal::service('router.admin_context')->isAdminRoute()) {
     /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
-    $paragraph = $elements['#paragraph'];
+    $paragraph = $variables['paragraph'];
 
     if ($paragraph->hasField('field_header')) {
       $field_header = $paragraph->get('field_header');
