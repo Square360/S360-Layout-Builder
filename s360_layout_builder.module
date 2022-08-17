@@ -56,31 +56,31 @@ function s360_layout_builder_page_attachments_alter(array &$attachments) {
  */
 function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
   if (!\Drupal::service('router.admin_context')->isAdminRoute()) {
-    $elements = $variables['elements'];
+    /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+    $paragraph = $elements['#paragraph'];
 
-    if (isset($elements['#paragraph'])) {
-      /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
-      $paragraph = $elements['#paragraph'];
+    if ($paragraph->hasField('field_header')) {
+      $field_header = $paragraph->get('field_header');
 
-      if ($paragraph->hasField('field_header')) {
-        $field_header = $paragraph->get('field_header');
+      if ($field_header->title !== '') {
+        if (strpos($paragraph->getBehaviorSetting('layout_paragraphs', 'layout'), 'accordion') !== FALSE) {
+          $header = [
+            '#type' => 'html_tag',
+            '#tag' => 'span',
+            '#value' => $field_header->title,
+          ];
+        }
+        else {
+          $header = $field_header->view([
+            'label' => 'hidden',
+          ]);
+        }
 
-        if ($field_header->title !== '') {
-          if (strpos($paragraph->getBehaviorSetting('layout_paragraphs', 'layout'), 'accordion') !== FALSE) {
-            $header = $field_header->title;
-          }
-          else {
-            $header = $field_header->view([
-              'label' => 'hidden',
-            ]);
-          }
+        $variables['content']['regions']['header'] = $header;
 
-          $variables['content']['regions']['header'] = $header;
-
-          // Only add "aria-labelledby" attribute if there is an heading_id.
-          if ($field_header->heading_id !== NULL) {
-            $variables['content']['regions']['#attributes']['aria-labelledby'] = $field_header->heading_id;
-          }
+        // Only add "aria-labelledby" attribute if there is an heading_id.
+        if ($field_header->heading_id !== NULL) {
+          $variables['content']['regions']['#attributes']['aria-labelledby'] = $field_header->heading_id;
         }
       }
     }
