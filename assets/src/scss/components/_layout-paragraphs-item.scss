@@ -33,6 +33,7 @@
     border-color: #5d749c !important;
     padding-top: 42px;
 
+    .paragraph-layout--label,
     .paragraph-type--label {
       @include font-awesome-icon($fa-var-th-large, 'regular', 'before');
 
@@ -42,6 +43,7 @@
     &:hover {
       border-color: #495b7a;
 
+      .paragraph-layout--label,
       .paragraph-type--label {
         background-color: #495b7a;
       }
