@@ -14,6 +14,10 @@ function s360_layout_builder_theme($existing, $type, $theme, $path) {
       'template' => 'paragraph--layout' ,
       'base hook' => 'paragraph',
     ],
+    'paragraph__layout__preview' => [
+      'template' => 'paragraph--layout--preview' ,
+      'base hook' => 'paragraph',
+    ],
     's360_layout_builder_onecol' => [
       'template' => 's360-layout-builder--onecol',
       'render element' => 'content',
