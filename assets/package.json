@@ -15,10 +15,18 @@
     "last 2 version"
   ],
   "scripts": {
-    "start": "yarn build --watch",
-    "build": "sass ./src/scss/s360-layout-builder.admin.scss ./dist/css/s360-layout-builder.admin.min.css --trace --no-source-map",
-    "build:prod": "yarn build; yarn uglifycss",
-    "uglifycss": "uglifycss ./dist/css/s360-layout-builder.admin.min.css --output ./dist/css/s360-layout-builder.admin.min.css"
+    "start:v1": "yarn build:v1 --watch",
+    "build:v1": "sass ./src/scss/s360-layout-builder-v1.admin.scss ./dist/css/s360-layout-builder-v1.admin.min.css --trace --no-source-map",
+    "build:v1:prod": "yarn build:v1; yarn uglifycss:v1",
+    "uglifycss:v1": "uglifycss ./dist/css/s360-layout-builder-v1.admin.min.css --output ./dist/css/s360-layout-builder-v1.admin.min.css",
+
+    "start:v2": "yarn build:v2 --watch",
+    "build:v2": "sass ./src/scss/s360-layout-builder-v2.admin.scss ./dist/css/s360-layout-builder-v2.admin.min.css --trace --no-source-map",
+    "build:v2:prod": "yarn build:v2; yarn uglifycss:v2",
+    "uglifycss:v2": "uglifycss ./dist/css/s360-layout-builder-v2.admin.min.css --output ./dist/css/s360-layout-builder-v2.admin.min.css",
+
+    "build": "yarn build:v1; yarn build:v2",
+    "build:prod": "yarn build:v1:prod; yarn build:v2:prod"
   },
   "devDependencies": {
     "sass": "1.32.8",
