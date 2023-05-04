@@ -1,0 +1,65 @@
+@use "../core/colors";
+
+.lp-builder {
+  .js-lpb-component {
+    --lpb-component-primary-color: #{ colors.$color-component };
+
+    border-width: 1px;
+    border-style: solid;
+    outline: none;
+    border-color: var(--lpb-component-primary-color);
+    padding-left: 20px;
+    padding-right: 20px;
+
+    &::after {
+      content: attr(data-type);
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background-color: var(--lpb-component-primary-color);
+      color: colors.$color-white;
+      border: none;
+      padding: 0.1em 1em;
+      font-style: normal;
+      font-size: 83%;
+    }
+
+    &.lpb-layout {
+      --lpb-component-primary-color: #{ colors.$color-layout };
+    }
+  }
+
+  .js-lpb-region {
+    border-width: 1px;
+    border-style: var(--lpb-region-border-style, dashed);
+    border-color: var(--lpb-region-border-color, #{ colors.$color-border });
+    min-height: 50px;
+    padding: 10px;
+    transition: all 150ms linear;
+    outline: none !important;
+
+    &.drag-target,
+    &:hover {
+      --lpb-region-border-style: solid;
+      --lpb-region-border-color: #{ colors.$color-border-hover };
+    }
+  }
+
+  &:not(.is-navigating) {
+    .js-lpb-component {
+      &:hover,
+      &:focus-within {
+        outline: none;
+
+        .js-lpb-region {
+          outline: none;
+
+          &:hover,
+          &:focus-within {
+            outline: none;
+          }
+        }
+      }
+    }
+  }
+}
