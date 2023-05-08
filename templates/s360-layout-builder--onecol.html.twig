@@ -6,11 +6,13 @@
 %}
 {% if content %}
   <section{{ attributes.addClass(classes) }}>
-    {{ content.header }}
+    <div class="layout__content">
+      {{ content.header }}
 
-    <div class="layout__regions">
-      <div {{ region_attributes.content }} class="layout__region layout__region--content">
-        {{ content.content }}
+      <div class="layout__regions">
+        <div {{ region_attributes.content }} class="layout__region layout__region--content">
+          {{ content.content }}
+        </div>
       </div>
     </div>
   </section>
