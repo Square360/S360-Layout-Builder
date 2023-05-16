@@ -38,6 +38,10 @@
     transition: all 150ms linear;
     outline: none !important;
 
+    > * + * {
+      margin-top: 10px;
+    }
+
     &.drag-target,
     &:hover {
       --lpb-region-border-style: solid;
