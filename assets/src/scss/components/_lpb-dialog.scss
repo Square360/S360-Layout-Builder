@@ -1,0 +1,27 @@
+.lpb-dialog {
+  .layout-select__item {
+    label.option {
+      outline: none;
+      display: inline-flex;
+      flex-direction: column;
+      height: 100%;
+      width: 100%;
+      margin: 0;
+      align-items: center;
+    }
+
+    padding-left: 0;
+  }
+
+  #layout-paragraphs-layout-options {
+    .details-wrapper {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+
+      *:last-child {
+        grid-column: 1 / -1;
+      }
+    }
+  }
+}
