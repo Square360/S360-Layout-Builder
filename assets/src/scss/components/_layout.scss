@@ -56,7 +56,8 @@
     }
 
     &.layout--30-70 {
-      > .layout__regions {
+      > .layout__regions,
+      > .layout__content > .layout__regions {
         gap: var(--grid-gap);
         grid-template-columns: calc(30% - #{ var(--grid-gap) } / 2) calc(70% - #{ var(--grid-gap) } / 2);
       }
