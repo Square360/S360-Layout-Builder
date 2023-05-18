@@ -11,11 +11,19 @@
 
       <div class="layout__regions">
         <div {{ region_attributes.first }} class="layout__region layout__region--first">
-          {{ content.first }}
+          {% for item in content.first %}
+            {% if item %}
+              <div class="layout__region-item">{{ item }}</div>
+            {% endif %}
+          {% endfor %}
         </div>
 
         <div {{ region_attributes.second }} class="layout__region layout__region--second">
-          {{ content.second }}
+          {% for item in content.second %}
+            {% if item %}
+              <div class="layout__region-item">{{ item }}</div>
+            {% endif %}
+          {% endfor %}
         </div>
       </div>
     </div>

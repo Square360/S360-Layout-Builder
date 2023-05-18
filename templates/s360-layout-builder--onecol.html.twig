@@ -11,7 +11,11 @@
 
       <div class="layout__regions">
         <div {{ region_attributes.content }} class="layout__region layout__region--content">
-          {{ content.content }}
+          {% for item in content.content %}
+            {% if item %}
+              <div class="layout__region-item">{{ item }}</div>
+            {% endif %}
+          {% endfor %}
         </div>
       </div>
     </div>
