@@ -23,8 +23,18 @@ function s360_layout_builder_theme($existing, $type, $theme, $path) {
       'render element' => 'content',
       'base hook' => 'layout',
     ],
+    's360_layout_builder_onecol__preview' => [
+      'template' => 's360-layout-builder--onecol--preview',
+      'render element' => 'content',
+      'base hook' => 'layout',
+    ],
     's360_layout_builder_accordion' => [
       'template' => 's360-layout-builder--accordion',
+      'render element' => 'content',
+      'base hook' => 'layout',
+    ],
+    's360_layout_builder_accordion__preview' => [
+      'template' => 's360-layout-builder--accordion--preview',
       'render element' => 'content',
       'base hook' => 'layout',
     ],
@@ -33,13 +43,28 @@ function s360_layout_builder_theme($existing, $type, $theme, $path) {
       'render element' => 'content',
       'base hook' => 'layout',
     ],
+    's360_layout_builder_twocol__preview' => [
+      'template' => 's360-layout-builder--twocol--preview',
+      'render element' => 'content',
+      'base hook' => 'layout',
+    ],
     's360_layout_builder_threecol' => [
       'template' => 's360-layout-builder--threecol',
       'render element' => 'content',
       'base hook' => 'layout',
     ],
+    's360_layout_builder_threecol__preview' => [
+      'template' => 's360-layout-builder--threecol--preview',
+      'render element' => 'content',
+      'base hook' => 'layout',
+    ],
     's360_layout_builder_fourcol' => [
       'template' => 's360-layout-builder--fourcol',
+      'render element' => 'content',
+      'base hook' => 'layout',
+    ],
+    's360_layout_builder_fourcol__preview' => [
+      'template' => 's360-layout-builder--fourcol--preview',
       'render element' => 'content',
       'base hook' => 'layout',
     ],
@@ -107,4 +132,17 @@ function s360_layout_builder_modules_installed() {
 
   $config->set('show_paragraph_labels', 1)->save();
   $config->set('show_layout_labels', 1)->save();
+}
+
+/**
+ * Implements hook_theme_suggestions_layout_alter().
+ */
+function s360_layout_builder_theme_suggestions_layout_alter(&$suggestions, $variables) {
+  $theme = $variables['content']['#theme'];
+
+  if (\Drupal::service('router.admin_context')->isAdminRoute()) {
+    if (str_contains($theme, 's360_layout_builder')) {
+      $suggestions[] = "{$theme}__preview";
+    }
+  }
 }
