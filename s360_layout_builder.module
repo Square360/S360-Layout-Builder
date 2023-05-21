@@ -19,52 +19,52 @@ function s360_layout_builder_theme($existing, $type, $theme, $path) {
       'base hook' => 'paragraph',
     ],
     's360_layout_builder_onecol' => [
-      'template' => 's360-layout-builder--onecol',
+      'template' => 's360-layout-builder-onecol',
       'render element' => 'content',
       'base hook' => 'layout',
     ],
-    's360_layout_builder_onecol__preview' => [
-      'template' => 's360-layout-builder--onecol--preview',
+    's360_layout_builder_onecol__admin' => [
+      'template' => 's360-layout-builder-onecol--admin',
       'render element' => 'content',
       'base hook' => 'layout',
     ],
     's360_layout_builder_accordion' => [
-      'template' => 's360-layout-builder--accordion',
+      'template' => 's360-layout-builder-accordion',
       'render element' => 'content',
       'base hook' => 'layout',
     ],
-    's360_layout_builder_accordion__preview' => [
-      'template' => 's360-layout-builder--accordion--preview',
+    's360_layout_builder_accordion__admin' => [
+      'template' => 's360-layout-builder-accordion--admin',
       'render element' => 'content',
       'base hook' => 'layout',
     ],
     's360_layout_builder_twocol' => [
-      'template' => 's360-layout-builder--twocol',
+      'template' => 's360-layout-builder-twocol',
       'render element' => 'content',
       'base hook' => 'layout',
     ],
-    's360_layout_builder_twocol__preview' => [
-      'template' => 's360-layout-builder--twocol--preview',
+    's360_layout_builder_twocol__admin' => [
+      'template' => 's360-layout-builder-twocol--admin',
       'render element' => 'content',
       'base hook' => 'layout',
     ],
     's360_layout_builder_threecol' => [
-      'template' => 's360-layout-builder--threecol',
+      'template' => 's360-layout-builder-threecol',
       'render element' => 'content',
       'base hook' => 'layout',
     ],
-    's360_layout_builder_threecol__preview' => [
-      'template' => 's360-layout-builder--threecol--preview',
+    's360_layout_builder_threecol__admin' => [
+      'template' => 's360-layout-builder-threecol--admin',
       'render element' => 'content',
       'base hook' => 'layout',
     ],
     's360_layout_builder_fourcol' => [
-      'template' => 's360-layout-builder--fourcol',
+      'template' => 's360-layout-builder-fourcol',
       'render element' => 'content',
       'base hook' => 'layout',
     ],
-    's360_layout_builder_fourcol__preview' => [
-      'template' => 's360-layout-builder--fourcol--preview',
+    's360_layout_builder_fourcol__admin' => [
+      'template' => 's360-layout-builder-fourcol--admin',
       'render element' => 'content',
       'base hook' => 'layout',
     ],
@@ -140,9 +140,13 @@ function s360_layout_builder_modules_installed() {
 function s360_layout_builder_theme_suggestions_layout_alter(&$suggestions, $variables) {
   $theme = $variables['content']['#theme'];
 
-  if (\Drupal::service('router.admin_context')->isAdminRoute()) {
+  if (in_array(Drupal::routeMatch()->getRouteName(), [
+    'entity.node.edit_form',
+    'layout_paragraphs.builder.choose_component',
+    'layout_paragraphs.builder.edit_item',
+  ])) {
     if (str_contains($theme, 's360_layout_builder')) {
-      $suggestions[] = "{$theme}__preview";
+      $suggestions[] = "{$theme}__admin";
     }
   }
 }
