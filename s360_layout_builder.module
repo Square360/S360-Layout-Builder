@@ -140,7 +140,11 @@ function s360_layout_builder_modules_installed() {
 function s360_layout_builder_theme_suggestions_layout_alter(&$suggestions, $variables) {
   $theme = $variables['content']['#theme'];
 
-  if (in_array(Drupal::routeMatch()->getRouteName(), ['entity.node.edit_form','layout_paragraphs.builder.choose_component'])) {
+  if (in_array(Drupal::routeMatch()->getRouteName(), [
+    'entity.node.edit_form',
+    'layout_paragraphs.builder.choose_component',
+    'layout_paragraphs.builder.edit_item',
+  ])) {
     if (str_contains($theme, 's360_layout_builder')) {
       $suggestions[] = "{$theme}__admin";
     }
