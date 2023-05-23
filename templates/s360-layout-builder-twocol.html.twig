@@ -5,7 +5,7 @@
   ]
 %}
 {% if content %}
-  <section{{ attributes.addClass(classes) }}>
+  <{{ content.layout_tag }}{{ attributes.addClass(classes) }}>
     <div class="layout__content">
       {{ content.header }}
 
@@ -27,5 +27,5 @@
         </div>
       </div>
     </div>
-  </section>
+  </{{ content.layout_tag }}>
 {% endif %}
