@@ -5,9 +5,13 @@
   ]
 %}
 {% if content %}
-  <{{ content.layout_tag }}{{ attributes.addClass(classes) }}>
+  <{{ content['#layout_tag'] }}{{ attributes.addClass(classes) }}>
     <div class="layout__content">
-      {{ content.header }}
+      {% if content.header %}
+        <div class="layout__header">
+          {{ content.header }}
+        </div>
+      {% endif %}
 
       <div class="layout__regions">
         <div {{ region_attributes.first }} class="layout__region layout__region--first">
@@ -43,5 +47,5 @@
         </div>
       </div>
     </div>
-  </{{ content.layout_tag }}>
+  </{{ content['#layout_tag'] }}>
 {% endif %}
