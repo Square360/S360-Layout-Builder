@@ -96,7 +96,7 @@ function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
     /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
     $paragraph = $variables['paragraph'];
 
-    $variables['content']['regions']['layout_tag'] = 'div';
+    $variables['content']['regions']['#layout_tag'] = 'div';
 
     if ($paragraph->hasField('field_header')) {
       $field_header = $paragraph->get('field_header');
@@ -116,7 +116,8 @@ function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
         }
 
         $variables['content']['regions']['header'] = $header;
-        $variables['content']['regions']['layout_tag'] = 'section';
+        $variables['content']['regions']['#attributes']['class'][] = 'layout--has-header';
+        $variables['content']['regions']['#layout_tag'] = 'section';
 
         // Only add "aria-labelledby" attribute if there is an heading_id.
         if ($field_header->heading_id !== NULL) {
