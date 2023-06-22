@@ -14,7 +14,7 @@
     &::after {
       content: attr(data-type);
       position: absolute;
-      bottom: 0;
+      top: 0;
       right: 0;
       background-color: var(--lpb-component-primary-color);
       color: colors.$color-white;
