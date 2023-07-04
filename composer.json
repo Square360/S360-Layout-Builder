@@ -8,22 +8,39 @@
         "Layouts"
     ],
     "license": "GPL-2.0-or-later",
-    "minimum-stability": "dev",
-    "version": "4.3.5",
-    "scripts": {
-        "code-sniff": [
-            "./vendor/bin/phpcs --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,info,txt,md --ignore=node_modules,bower_components,vendor,assets .",
-            "./vendor/bin/phpcs --standard=DrupalPractice --extensions=php,module,inc,install,test,profile,theme,info,txt,md --ignore=node_modules,bower_components,vendor,assets ."
-        ]
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://packages.drupal.org/8"
+        },
+        {
+            "type": "composer",
+            "url": "https://packages.square360.com"
+        }
+    ],
+    "require": {
+        "drupal/layout_paragraphs": "^2.0",
+        "drupal/media_library_form_element": "^2.0",
+        "drupal/paragraphs": "^1.15",
+        "square360/s360_advanced_header_field": "^3.0"
     },
     "require-dev": {
         "drupal/coder": "^8.3",
         "squizlabs/php_codesniffer": "3.*",
         "dealerdirect/phpcodesniffer-composer-installer": "^0.7.1"
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "code-sniff": [
+            "./vendor/bin/phpcs --standard=Drupal --extensions=php,module,inc,install,test,profile,theme,info,txt,md --ignore=node_modules,bower_components,vendor,assets .",
+            "./vendor/bin/phpcs --standard=DrupalPractice --extensions=php,module,inc,install,test,profile,theme,info,txt,md --ignore=node_modules,bower_components,vendor,assets ."
+        ]
+    },
     "config": {
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": false
-        }
+        },
+        "sort-packages": true
     }
 }
