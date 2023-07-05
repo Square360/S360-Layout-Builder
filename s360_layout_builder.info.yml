@@ -3,10 +3,12 @@ description: 'Provides a layout paragraph and class configurations'
 type: module
 package: 'Paragraphs'
 dependencies:
-  - drupal:layout_paragraphs
+  # Core
   - drupal:media
   - drupal:media_library
-  - drupal:media_library_form_element
-  - drupal:paragraphs
-  - square360:s360_advanced_header_field
+  # Contrib
+  - layout_paragraphs:layout_paragraphs
+  - media_library_form_element:media_library_form_element
+  - paragraphs:paragraphs
+  - s360_advanced_header_field:s360_advanced_header_field
 core_version_requirement: ^9 || ^10
