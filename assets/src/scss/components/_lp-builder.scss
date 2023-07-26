@@ -10,6 +10,7 @@
     border-color: var(--lpb-component-primary-color);
     padding-left: 20px;
     padding-right: 20px;
+    padding-top: 2em;
 
     &::after {
       content: attr(data-type);
