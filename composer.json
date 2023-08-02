@@ -19,10 +19,10 @@
         }
     ],
     "require": {
+        "drupal/advanced_header_field": "^1.0",
         "drupal/layout_paragraphs": "^2.0",
         "drupal/media_library_form_element": "^2.0",
-        "drupal/paragraphs": "^1.15",
-        "square360/s360_advanced_header_field": "^3.0"
+        "drupal/paragraphs": "^1.15"
     },
     "require-dev": {
         "drupal/coder": "^8.3",
