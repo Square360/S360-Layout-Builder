@@ -10,19 +10,19 @@
       {{ content.header }}
 
       <div class="layout__regions">
-        <div {{ region_attributes.first }} class="layout__region layout__region--first">
+        <div {{ region_attributes.first.addClass(['layout__region', 'layout__region--first']) }}>
           {{ content.first }}
         </div>
 
-        <div {{ region_attributes.second }} class="layout__region layout__region--second">
+        <div {{ region_attributes.second.addClass(['layout__region', 'layout__region--second']) }}>
           {{ content.second }}
         </div>
 
-        <div {{ region_attributes.third }} class="layout__region layout__region--third">
+        <div {{ region_attributes.third.addClass(['layout__region', 'layout__region--third']) }}>
           {{ content.third }}
         </div>
 
-        <div {{ region_attributes.fourth }} class="layout__region layout__region--fourth">
+        <div {{ region_attributes.fourth.addClass(['layout__region', 'layout__region--fourth']) }}>
           {{ content.fourth }}
         </div>
       </div>
