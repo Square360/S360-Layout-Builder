@@ -14,7 +14,7 @@
       {% endif %}
 
       <div class="layout__regions">
-        <div {{ region_attributes.content }} class="layout__region layout__region--content">
+        <div {{ region_attributes.content.addClass(['layout__region layout__region--content']) }}>
           {% for item in content.content %}
             {% if item %}
               <div class="layout__region-item">{{ item }}</div>
