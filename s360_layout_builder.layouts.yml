@@ -1,0 +1,83 @@
+layout_custom_one_column:
+  label: 'One Column'
+  category: 'Custom Layouts'
+  class: \Drupal\style_options\Plugin\Layout\StyleOptionLayoutPlugin
+  theme_hook: s360_layout_builder_one_column
+  default_region: first
+  icon_map:
+    - [first]
+  regions:
+    first:
+      label: first
+
+layout_custom_two_column:
+  label: 'Two Column'
+  category: 'Custom Layouts'
+  class: \Drupal\style_options\Plugin\Layout\StyleOptionLayoutPlugin
+  theme_hook: s360_layout_builder_two_column
+  default_region: first
+  icon_map:
+    - [first, second]
+  regions:
+    first:
+      label: First
+    second:
+      label: Second
+
+layout_custom_three_column:
+  label: 'Three Column'
+  category: 'Custom Layouts'
+  class: \Drupal\style_options\Plugin\Layout\StyleOptionLayoutPlugin
+  theme_hook: s360_layout_builder_three_column
+  default_region: first
+  icon_map:
+    - [first, second, third]
+  regions:
+    first:
+      label: First
+    second:
+      label: Second
+    third:
+      label: Third
+
+layout_custom_four_column:
+  label: 'Four Column'
+  category: 'Custom Layouts'
+  class: \Drupal\style_options\Plugin\Layout\StyleOptionLayoutPlugin
+  theme_hook: s360_layout_builder_four_column
+  default_region: first
+  icon_map:
+    - [first, second, third, fourth]
+  regions:
+    first:
+      label: First
+    second:
+      label: Second
+    third:
+      label: Third
+    fourth:
+      label: Fourth
+
+layout_custom_accordion:
+  label: 'Accordion'
+  category: 'Custom Layouts'
+  class: \Drupal\style_options\Plugin\Layout\StyleOptionLayoutPlugin
+  theme_hook: s360_layout_builder_accordion
+  default_region: first
+  icon_map:
+    - [first]
+  regions:
+    first:
+      label: first
+
+layout_custom_flex:
+  label: 'Flex'
+  category: 'Custom Layouts'
+  class: \Drupal\style_options\Plugin\Layout\StyleOptionLayoutPlugin
+  theme_hook: s360_layout_builder_flex
+  default_region: first
+  icon_map:
+    - [first]
+  regions:
+    first:
+      label: first
