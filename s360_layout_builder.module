@@ -18,13 +18,43 @@ function s360_layout_builder_theme($existing, $type, $theme, $path) {
       'template' => 'paragraph--layout--preview' ,
       'base hook' => 'paragraph',
     ],
-    's360_layout_builder_onecol' => [
-      'template' => 's360-layout-builder-onecol',
+    's360_layout_builder_one_column' => [
+      'template' => 's360-layout-builder-one-column',
       'render element' => 'content',
       'base hook' => 'layout',
     ],
-    's360_layout_builder_onecol__admin' => [
-      'template' => 's360-layout-builder-onecol--admin',
+    's360_layout_builder_one_column__admin' => [
+      'template' => 's360-layout-builder-one-column--admin',
+      'render element' => 'content',
+      'base hook' => 'layout',
+    ],
+    's360_layout_builder_two_column' => [
+      'template' => 's360-layout-builder-two-column',
+      'render element' => 'content',
+      'base hook' => 'layout',
+    ],
+    's360_layout_builder_two_column__admin' => [
+      'template' => 's360-layout-builder-two-column--admin',
+      'render element' => 'content',
+      'base hook' => 'layout',
+    ],
+    's360_layout_builder_three_column' => [
+      'template' => 's360-layout-builder-three-column',
+      'render element' => 'content',
+      'base hook' => 'layout',
+    ],
+    's360_layout_builder_three_column__admin' => [
+      'template' => 's360-layout-builder-three-column--admin',
+      'render element' => 'content',
+      'base hook' => 'layout',
+    ],
+    's360_layout_builder_four_column' => [
+      'template' => 's360-layout-builder-four-column',
+      'render element' => 'content',
+      'base hook' => 'layout',
+    ],
+    's360_layout_builder_four_column__admin' => [
+      'template' => 's360-layout-builder-four-column--admin',
       'render element' => 'content',
       'base hook' => 'layout',
     ],
@@ -38,33 +68,13 @@ function s360_layout_builder_theme($existing, $type, $theme, $path) {
       'render element' => 'content',
       'base hook' => 'layout',
     ],
-    's360_layout_builder_twocol' => [
-      'template' => 's360-layout-builder-twocol',
+    's360_layout_builder_flex' => [
+      'template' => 's360-layout-builder-one-column',
       'render element' => 'content',
       'base hook' => 'layout',
     ],
-    's360_layout_builder_twocol__admin' => [
-      'template' => 's360-layout-builder-twocol--admin',
-      'render element' => 'content',
-      'base hook' => 'layout',
-    ],
-    's360_layout_builder_threecol' => [
-      'template' => 's360-layout-builder-threecol',
-      'render element' => 'content',
-      'base hook' => 'layout',
-    ],
-    's360_layout_builder_threecol__admin' => [
-      'template' => 's360-layout-builder-threecol--admin',
-      'render element' => 'content',
-      'base hook' => 'layout',
-    ],
-    's360_layout_builder_fourcol' => [
-      'template' => 's360-layout-builder-fourcol',
-      'render element' => 'content',
-      'base hook' => 'layout',
-    ],
-    's360_layout_builder_fourcol__admin' => [
-      'template' => 's360-layout-builder-fourcol--admin',
+    's360_layout_builder_flex__admin' => [
+      'template' => 's360-layout-builder-one-column--admin',
       'render element' => 'content',
       'base hook' => 'layout',
     ],
