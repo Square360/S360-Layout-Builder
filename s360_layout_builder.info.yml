@@ -8,8 +8,7 @@ dependencies:
   - drupal:media_library
 
   # Contrib
-  - layout_paragraphs:layout_paragraphs
-  - media_library_form_element:media_library_form_element
-  - paragraphs:paragraphs
   - advanced_header_field:advanced_header_field
+  - layout_paragraphs:layout_paragraphs
+  - style_options:style_options
 core_version_requirement: ^9 || ^10
