@@ -8,20 +8,20 @@
       width: 100%;
       margin: 0;
       align-items: center;
+
+      .layout-select__item-icon {
+        margin: 0;
+      }
     }
 
     padding-left: 0;
   }
 
   #layout-paragraphs-layout-options {
-    .details-wrapper {
+    .details-wrapper > [data-drupal-selector="edit-layout-paragraphs-config-layout"] {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 20px;
-
-      *:last-child {
-        grid-column: 1 / -1;
-      }
     }
   }
 }
