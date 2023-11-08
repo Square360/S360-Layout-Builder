@@ -85,11 +85,17 @@ function s360_layout_builder_theme($existing, $type, $theme, $path) {
  * Implements hook_page_attachments_alter().
  */
 function s360_layout_builder_page_attachments_alter(array &$attachments) {
-  $drupal_version = \Drupal::VERSION;
-  $d10_version_pattern = "/^10\./i";
+  $version_2_pattern = "/^2\./i";
+
+   /** @var \Drupal\Core\Extension\ModuleExtensionList $module_extension_list */
+  $module_extension_list = \Drupal::service('extension.list.module');
+
+  /** @var \Drupal\Core\Extension\Extension $layout_paragraphs_extension */
+  $layout_paragraphs_extension = $module_extension_list->getExtensionInfo('layout_paragraphs');
+  $layout_paragraphs_verison = $layout_paragraphs_extension['version'];
 
   if (\Drupal::service('router.admin_context')->isAdminRoute()) {
-    if (preg_match($d10_version_pattern, $drupal_version)) {
+    if (preg_match($version_2_pattern, $layout_paragraphs_verison)) {
       $attachments['#attached']['library'][] = 's360_layout_builder/admin-v2';
     }
     else {
