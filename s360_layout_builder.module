@@ -87,7 +87,7 @@ function s360_layout_builder_theme($existing, $type, $theme, $path) {
 function s360_layout_builder_page_attachments_alter(array &$attachments) {
   $version_2_pattern = "/^2\./i";
 
-   /** @var \Drupal\Core\Extension\ModuleExtensionList $module_extension_list */
+  /** @var \Drupal\Core\Extension\ModuleExtensionList $module_extension_list */
   $module_extension_list = \Drupal::service('extension.list.module');
 
   /** @var \Drupal\Core\Extension\Extension $layout_paragraphs_extension */
