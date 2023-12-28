@@ -12,16 +12,11 @@
         {
             "type": "composer",
             "url": "https://packages.drupal.org/8"
-        },
-        {
-            "type": "composer",
-            "url": "https://packages.square360.com"
         }
     ],
     "require": {
         "drupal/advanced_header_field": "^1.0",
-        "drupal/layout_paragraphs": "^2.0",
-        "drupal/style_options": "^1.0@alpha"
+        "drupal/layout_paragraphs": "^2.0"
     },
     "require-dev": {
         "drupal/coder": "^8.3",
