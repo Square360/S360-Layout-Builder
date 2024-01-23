@@ -8,7 +8,7 @@ layout_custom_one_column:
     - [first]
   regions:
     first:
-      label: first
+      label: First
 
 layout_custom_two_column:
   label: 'Two Column'
@@ -68,7 +68,7 @@ layout_custom_accordion:
     - [first]
   regions:
     first:
-      label: first
+      label: First
 
 layout_custom_flex:
   label: 'Flex'
@@ -80,4 +80,4 @@ layout_custom_flex:
     - [first]
   regions:
     first:
-      label: first
+      label: First
