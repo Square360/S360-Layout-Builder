@@ -7,22 +7,17 @@
 {% if content %}
   <div{{ attributes.addClass(classes) }}>
     <div class="layout__content">
-      {% if content.header %}
+      {% if content['#header'] %}
         <details class="layout__details">
-          <summary class="layout__summary">{{ content.header }}</summary>
+          <summary class="layout__summary">{{ content['#header'] }}</summary>
       {% endif %}
 
-      <div class="layout__regions">
-        <div {{ region_attributes.first.addClass(['layout__region', 'layout__region--first']) }}>
-          {% for item in content.first %}
-            {% if item %}
-              <div class="layout__region-item">{{ item }}</div>
-            {% endif %}
-          {% endfor %}
-        </div>
-      </div>
+      {% include "@s360_layout_builder/component/layout-regions.twig" with {
+        layout_regions_content: content,
+        layout_regions_region_attributes: region_attributes
+      } %}
 
-      {% if content.header %}
+      {% if content['#header'] %}
         </details>
       {% endif %}
     </div>

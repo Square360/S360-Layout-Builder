@@ -119,7 +119,7 @@ function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
           [
             '#type' => 'html_tag',
             '#tag' => 'div',
-            '#value' => $matches[1],
+            '#value' => ucwords(str_replace('_', ' ', $matches[1])),
             '#attributes' => [
               'class' => 'field__label',
             ],
@@ -127,7 +127,7 @@ function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
           [
             '#type' => 'html_tag',
             '#tag' => 'div',
-            '#value' => $value['css_class'],
+            '#value' => $value[key($value)],
             '#attributes' => [
               'class' => 'field__item',
             ],
