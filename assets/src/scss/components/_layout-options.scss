@@ -1,0 +1,18 @@
+.layout-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  margin-bottom: 10px;
+
+  &__option-label {
+
+    &::after {
+      content: ':';
+    }
+  }
+
+  &__option-value {
+
+    font-weight: bold;
+  }
+}

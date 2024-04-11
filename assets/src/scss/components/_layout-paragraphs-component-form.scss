@@ -1,0 +1,37 @@
+.layout-paragraphs-component-form {
+  .layout-select {
+    gap: 20px;
+    margin-top: 10px;
+  }
+
+  .layout-select__item {
+    padding: 0;
+    margin: 0;
+    line-height: 1;
+
+    .option {
+      outline: none;
+      display: inline-flex;
+      flex-direction: column;
+      margin: 0;
+      align-items: center;
+
+      .layout-select__item-icon {
+        margin: 0;
+        margin-bottom: 10px;
+      }
+    }
+  }
+
+  #layout-paragraphs-layout-options {
+    [data-drupal-selector="edit-layout-paragraphs-config-layout"] {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+
+      .form-item {
+        margin: 0;
+      }
+    }
+  }
+}

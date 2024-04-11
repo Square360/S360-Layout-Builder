@@ -7,37 +7,30 @@
 }
 .layout--two-column.layout--50-50 > .layout__regions,
 .layout--two-column.layout--50-50 > .layout__content > .layout__regions {
-  gap: var(--grid-gap);
   grid-template-columns: calc(50% - var(--grid-gap) / 2) calc(50% - var(--grid-gap) / 2);
 }
 .layout--two-column.layout--25-75 > .layout__regions,
 .layout--two-column.layout--25-75 > .layout__content > .layout__regions {
-  gap: var(--grid-gap);
   grid-template-columns: calc(25% - var(--grid-gap) / 2) calc(75% - var(--grid-gap) / 2);
 }
 .layout--two-column.layout--75-25 > .layout__regions,
 .layout--two-column.layout--75-25 > .layout__content > .layout__regions {
-  gap: var(--grid-gap);
   grid-template-columns: calc(75% - var(--grid-gap) / 2) calc(25% - var(--grid-gap) / 2);
 }
 .layout--two-column.layout--40-60 > .layout__regions,
 .layout--two-column.layout--40-60 > .layout__content > .layout__regions {
-  gap: var(--grid-gap);
   grid-template-columns: calc(40% - var(--grid-gap) / 2) calc(60% - var(--grid-gap) / 2);
 }
 .layout--two-column.layout--60-40 > .layout__regions,
 .layout--two-column.layout--60-40 > .layout__content > .layout__regions {
-  gap: var(--grid-gap);
   grid-template-columns: calc(60% - var(--grid-gap) / 2) calc(40% - var(--grid-gap) / 2);
 }
 .layout--two-column.layout--30-70 > .layout__regions,
 .layout--two-column.layout--30-70 > .layout__content > .layout__regions {
-  gap: var(--grid-gap);
   grid-template-columns: calc(30% - var(--grid-gap) / 2) calc(70% - var(--grid-gap) / 2);
 }
 .layout--two-column.layout--70-30 > .layout__regions,
 .layout--two-column.layout--70-30 > .layout__content > .layout__regions {
-  gap: var(--grid-gap);
   grid-template-columns: calc(70% - var(--grid-gap) / 2) calc(30% - var(--grid-gap) / 2);
 }
 .layout--three-column.layout--33-33-33 > .layout__regions,
@@ -46,17 +39,14 @@
 }
 .layout--three-column.layout--25-50-25 > .layout__regions,
 .layout--three-column.layout--25-50-25 > .layout__content > .layout__regions {
-  gap: var(--grid-gap);
   grid-template-columns: calc(25% - var(--grid-gap) / 2) calc(50% - var(--grid-gap) / 2) calc(25% - var(--grid-gap) / 2);
 }
 .layout--three-column.layout--50-25-25 > .layout__regions,
 .layout--three-column.layout--50-25-25 > .layout__content > .layout__regions {
-  gap: var(--grid-gap);
   grid-template-columns: calc(50% - var(--grid-gap) / 2) calc(25% - var(--grid-gap) / 2) calc(25% - var(--grid-gap) / 2);
 }
 .layout--three-column.layout--25-25-50 > .layout__regions,
 .layout--three-column.layout--25-25-50 > .layout__content > .layout__regions {
-  gap: var(--grid-gap);
   grid-template-columns: calc(25% - var(--grid-gap) / 2) calc(25% - var(--grid-gap) / 2) calc(50% - var(--grid-gap) / 2);
 }
 .layout--four-column > .layout__regions,
@@ -115,23 +105,44 @@
   outline: none;
 }
 
-.lpb-dialog .layout-select__item {
-  padding-left: 0;
+.layout-paragraphs-component-form .layout-select {
+  gap: 20px;
+  margin-top: 10px;
 }
-.lpb-dialog .layout-select__item label.option {
+.layout-paragraphs-component-form .layout-select__item {
+  padding: 0;
+  margin: 0;
+  line-height: 1;
+}
+.layout-paragraphs-component-form .layout-select__item .option {
   outline: none;
   display: inline-flex;
   flex-direction: column;
-  height: 100%;
-  width: 100%;
   margin: 0;
   align-items: center;
 }
-.lpb-dialog .layout-select__item label.option .layout-select__item-icon {
+.layout-paragraphs-component-form .layout-select__item .option .layout-select__item-icon {
+  margin: 0;
+  margin-bottom: 10px;
+}
+.layout-paragraphs-component-form #layout-paragraphs-layout-options [data-drupal-selector=edit-layout-paragraphs-config-layout] {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.layout-paragraphs-component-form #layout-paragraphs-layout-options [data-drupal-selector=edit-layout-paragraphs-config-layout] .form-item {
   margin: 0;
 }
-.lpb-dialog #layout-paragraphs-layout-options .details-wrapper > [data-drupal-selector=edit-layout-paragraphs-config-layout] {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+
+.layout-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  margin-bottom: 10px;
+}
+.layout-options__option-label::after {
+  content: ":";
+}
+.layout-options__option-value {
+  font-weight: bold;
 }
