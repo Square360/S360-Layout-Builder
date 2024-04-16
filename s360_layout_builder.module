@@ -101,6 +101,23 @@ function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
     $variables['content']['layout_options'] = [
       '#type' => 'html_tag',
       '#tag' => 'div',
+      '#attributes' => [
+        'class' => [
+          'layout-options'
+        ],
+      ],
+      'child' => [
+        [
+          '#type' => 'html_tag',
+          '#tag' => 'div',
+          '#value' => 'Layout Options',
+          '#attributes' => [
+            'class' => [
+              'layout-options__label'
+            ],
+          ],
+        ],
+      ]
     ];
 
     foreach ($layout_configs as $key => $value) {
@@ -111,9 +128,8 @@ function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
         '#tag' => 'div',
         '#attributes' => [
           'class' => [
-            'field',
-            'field--label-inline',
-          ],
+            'layout-options__option'
+          ]
         ],
         'child' => [
           [
@@ -121,7 +137,7 @@ function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
             '#tag' => 'div',
             '#value' => ucwords(str_replace('_', ' ', $matches[1])),
             '#attributes' => [
-              'class' => 'field__label',
+              'class' => ['layout-options__option-label'],
             ],
           ],
           [
@@ -129,7 +145,7 @@ function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
             '#tag' => 'div',
             '#value' => $value[key($value)],
             '#attributes' => [
-              'class' => 'field__item',
+              'class' => ['layout-options__option-value'],
             ],
           ],
         ],
