@@ -85,7 +85,9 @@ function s360_layout_builder_theme($existing, $type, $theme, $path) {
  * Implements hook_page_attachments_alter().
  */
 function s360_layout_builder_page_attachments_alter(array &$attachments) {
-  $attachments['#attached']['library'][] = 's360_layout_builder/admin';
+  if (\Drupal::service('router.admin_context')->isAdminRoute()) {
+    $attachments['#attached']['library'][] = 's360_layout_builder/admin';
+  }
 }
 
 /**
@@ -94,6 +96,7 @@ function s360_layout_builder_page_attachments_alter(array &$attachments) {
 function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
   /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
   $paragraph = $variables['paragraph'];
+  $paragraph_is_published = $paragraph->isPublished() ? 'published' : 'unpublished';
 
   if (_s360_layout_builder_is_admin_route()) {
     $layout_configs = $paragraph->getBehaviorSetting('layout_paragraphs', 'config')['layout'];
@@ -103,7 +106,7 @@ function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
       '#tag' => 'div',
       '#attributes' => [
         'class' => [
-          'layout-options'
+          'layout-options',
         ],
       ],
       'child' => [
@@ -113,11 +116,11 @@ function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
           '#value' => 'Layout Options',
           '#attributes' => [
             'class' => [
-              'layout-options__label'
+              'layout-options__label',
             ],
           ],
         ],
-      ]
+      ],
     ];
 
     foreach ($layout_configs as $key => $value) {
@@ -128,8 +131,8 @@ function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
         '#tag' => 'div',
         '#attributes' => [
           'class' => [
-            'layout-options__option'
-          ]
+            'layout-options__option',
+          ],
         ],
         'child' => [
           [
@@ -173,7 +176,7 @@ function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
           ]);
         }
 
-        $variables['content']['regions']['header'] = $header;
+        $variables['content']['regions']['#header'] = $header;
         $variables['content']['regions']['#attributes']['class'][] = 'layout--has-header';
         $variables['content']['regions']['#layout_tag'] = 'section';
 
@@ -184,6 +187,8 @@ function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
       }
     }
   }
+
+  $variables['content']['regions']['#attributes']['class'][] = 'layout--' . $paragraph_is_published;
 }
 
 /**
