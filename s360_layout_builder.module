@@ -99,7 +99,7 @@ function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
   $paragraph_is_published = $paragraph->isPublished() ? 'published' : 'unpublished';
 
   if (_s360_layout_builder_is_admin_route()) {
-    $layout_configs = $paragraph->getBehaviorSetting('layout_paragraphs', 'config')['layout'];
+    $layout_configs = (array) $paragraph->getBehaviorSetting('layout_paragraphs', 'config')['layout'];
 
     $variables['content']['layout_options'] = [
       '#type' => 'html_tag',
@@ -126,33 +126,35 @@ function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
     foreach ($layout_configs as $key => $value) {
       preg_match('/(?:layout_(?:(?:one|two|three)_)?)(.*?)(?=_options)/', $key, $matches);
 
-      $variables['content']['layout_options']['field_' . $matches[1]] = [
-        '#type' => 'html_tag',
-        '#tag' => 'div',
-        '#attributes' => [
-          'class' => [
-            'layout-options__option',
-          ],
-        ],
-        'child' => [
-          [
-            '#type' => 'html_tag',
-            '#tag' => 'div',
-            '#value' => ucwords(str_replace('_', ' ', $matches[1])),
-            '#attributes' => [
-              'class' => ['layout-options__option-label'],
+      if ($matches) {
+        $variables['content']['layout_options']['field_' . $matches[1]] = [
+          '#type' => 'html_tag',
+          '#tag' => 'div',
+          '#attributes' => [
+            'class' => [
+              'layout-options__option',
             ],
           ],
-          [
-            '#type' => 'html_tag',
-            '#tag' => 'div',
-            '#value' => $value[key($value)],
-            '#attributes' => [
-              'class' => ['layout-options__option-value'],
+          'child' => [
+            [
+              '#type' => 'html_tag',
+              '#tag' => 'div',
+              '#value' => ucwords(str_replace('_', ' ', $matches[1])),
+              '#attributes' => [
+                'class' => ['layout-options__option-label'],
+              ],
+            ],
+            [
+              '#type' => 'html_tag',
+              '#tag' => 'div',
+              '#value' => $value[key($value)],
+              '#attributes' => [
+                'class' => ['layout-options__option-value'],
+              ],
             ],
           ],
-        ],
-      ];
+        ];
+      }
     }
   }
 
