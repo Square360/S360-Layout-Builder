@@ -85,22 +85,8 @@ function s360_layout_builder_theme($existing, $type, $theme, $path) {
  * Implements hook_page_attachments_alter().
  */
 function s360_layout_builder_page_attachments_alter(array &$attachments) {
-  $version_2_pattern = "/^2\./i";
-
-  /** @var \Drupal\Core\Extension\ModuleExtensionList $module_extension_list */
-  $module_extension_list = \Drupal::service('extension.list.module');
-
-  /** @var \Drupal\Core\Extension\Extension $layout_paragraphs_extension */
-  $layout_paragraphs_extension = $module_extension_list->getExtensionInfo('layout_paragraphs');
-  $layout_paragraphs_verison = $layout_paragraphs_extension['version'];
-
   if (\Drupal::service('router.admin_context')->isAdminRoute()) {
-    if (preg_match($version_2_pattern, $layout_paragraphs_verison)) {
-      $attachments['#attached']['library'][] = 's360_layout_builder/admin-v2';
-    }
-    else {
-      $attachments['#attached']['library'][] = 's360_layout_builder/admin-v1';
-    }
+    $attachments['#attached']['library'][] = 's360_layout_builder/admin';
   }
 }
 
@@ -108,10 +94,69 @@ function s360_layout_builder_page_attachments_alter(array &$attachments) {
  * Implements hook_preprocess_paragraph() for layout.
  */
 function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
-  if (!_s360_layout_builder_is_admin_route()) {
-    /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
-    $paragraph = $variables['paragraph'];
+  /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+  $paragraph = $variables['paragraph'];
+  $paragraph_is_published = $paragraph->isPublished() ? 'published' : 'unpublished';
 
+  if (_s360_layout_builder_is_admin_route()) {
+    $layout_configs = $paragraph->getBehaviorSetting('layout_paragraphs', 'config')['layout'];
+
+    $variables['content']['layout_options'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'div',
+      '#attributes' => [
+        'class' => [
+          'layout-options',
+        ],
+      ],
+      'child' => [
+        [
+          '#type' => 'html_tag',
+          '#tag' => 'div',
+          '#value' => 'Layout Options',
+          '#attributes' => [
+            'class' => [
+              'layout-options__label',
+            ],
+          ],
+        ],
+      ],
+    ];
+
+    foreach ($layout_configs as $key => $value) {
+      preg_match('/(?:layout_(?:(?:one|two|three)_)?)(.*?)(?=_options)/', $key, $matches);
+
+      $variables['content']['layout_options']['field_' . $matches[1]] = [
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#attributes' => [
+          'class' => [
+            'layout-options__option',
+          ],
+        ],
+        'child' => [
+          [
+            '#type' => 'html_tag',
+            '#tag' => 'div',
+            '#value' => ucwords(str_replace('_', ' ', $matches[1])),
+            '#attributes' => [
+              'class' => ['layout-options__option-label'],
+            ],
+          ],
+          [
+            '#type' => 'html_tag',
+            '#tag' => 'div',
+            '#value' => $value[key($value)],
+            '#attributes' => [
+              'class' => ['layout-options__option-value'],
+            ],
+          ],
+        ],
+      ];
+    }
+  }
+
+  if (!_s360_layout_builder_is_admin_route()) {
     $variables['content']['regions']['#layout_tag'] = 'div';
 
     if ($paragraph->hasField('field_header')) {
@@ -131,7 +176,7 @@ function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
           ]);
         }
 
-        $variables['content']['regions']['header'] = $header;
+        $variables['content']['regions']['#header'] = $header;
         $variables['content']['regions']['#attributes']['class'][] = 'layout--has-header';
         $variables['content']['regions']['#layout_tag'] = 'section';
 
@@ -142,6 +187,8 @@ function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
       }
     }
   }
+
+  $variables['content']['regions']['#attributes']['class'][] = 'layout--' . $paragraph_is_published;
 }
 
 /**

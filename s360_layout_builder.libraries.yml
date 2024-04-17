@@ -1,11 +1,5 @@
-admin-v1:
+admin:
   version: VERSION
   css:
     theme:
-      assets/dist/css/s360-layout-builder-v1.admin.min.css: {}
-
-admin-v2:
-  version: VERSION
-  css:
-    theme:
-      assets/dist/css/s360-layout-builder-v2.admin.min.css: {}
+      assets/dist/css/s360-layout-builder.admin.min.css: {}

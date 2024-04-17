@@ -1,0 +1,11 @@
+<div class="layout__regions">
+  {% for region_key, region_attribute in layout_regions_region_attributes %}
+    <div {{ region_attribute.addClass(['layout__region', 'layout__region--' ~ region_key]) }}>
+      {% for item_key, item in layout_regions_content[region_key] %}
+        {% if item and item_key matches '/^\\d+$/' %}
+          <div class="layout__region-item">{{ item }}</div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endfor %}
+</div>
