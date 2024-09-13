@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Drupal\code_testing\Plugin\StyleOption;
+namespace Drupal\s360_layout_builder\Plugin\StyleOption;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\style_options\Plugin\StyleOptionPluginBase;
