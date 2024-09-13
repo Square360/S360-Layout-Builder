@@ -124,7 +124,7 @@ function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
     ];
 
     foreach ($layout_configs as $layout_config_key => $layout_config_value) {
-      /**
+      /*
        * Patterns:
        *  layout_[*]_options
        *  layout_[one|two|three|four]_column_[*]_options
