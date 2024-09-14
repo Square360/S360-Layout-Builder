@@ -105,9 +105,7 @@ function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
       '#type' => 'html_tag',
       '#tag' => 'div',
       '#attributes' => [
-        'class' => [
-          'layout-options',
-        ],
+        'class' => 'layout-options',
       ],
       'child' => [
         [
@@ -115,9 +113,7 @@ function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
           '#tag' => 'div',
           '#value' => 'Layout Options',
           '#attributes' => [
-            'class' => [
-              'layout-options__label',
-            ],
+            'class' => 'layout-options__label',
           ],
         ],
       ],
@@ -142,9 +138,7 @@ function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
         '#type' => 'html_tag',
         '#tag' => 'div',
         '#attributes' => [
-          'class' => [
-            'layout-options__option',
-          ],
+          'class' => 'layout-options__option',
         ],
         'child' => [
           [
@@ -152,7 +146,7 @@ function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
             '#tag' => 'div',
             '#value' => ucwords(str_replace('_', ' ', $matches[1])),
             '#attributes' => [
-              'class' => ['layout-options__option-label'],
+              'class' => 'layout-options__option-label',
             ],
           ],
           [
@@ -160,7 +154,7 @@ function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
             '#tag' => 'div',
             '#value' => $layout_config_value[key($layout_config_value)],
             '#attributes' => [
-              'class' => ['layout-options__option-value'],
+              'class' => 'layout-options__option-value',
             ],
           ],
         ],
@@ -175,9 +169,7 @@ function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
         '#type' => 'html_tag',
         '#tag' => 'div',
         '#attributes' => [
-          'class' => [
-            'layout-options',
-          ],
+          'class' => 'region-options',
         ],
         'child' => [
           [
@@ -185,9 +177,7 @@ function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
             '#tag' => 'div',
             '#value' => 'Region Options',
             '#attributes' => [
-              'class' => [
-                'layout-options__label',
-              ],
+              'class' => 'region-options__label',
             ],
           ],
         ],
@@ -206,9 +196,7 @@ function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
           '#type' => 'html_tag',
           '#tag' => 'div',
           '#attributes' => [
-            'class' => [
-              'layout-options__option',
-            ],
+            'class' => 'region-options__option',
           ],
           'child' => [
             [
@@ -216,7 +204,7 @@ function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
               '#tag' => 'div',
               '#value' => ucwords(str_replace('_', ' ', $matches[1])),
               '#attributes' => [
-                'class' => ['layout-options__option-label'],
+                'class' => 'region-options__option-label',
               ],
             ],
             [
@@ -228,7 +216,7 @@ function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
                   : 'false')
                 : $region_config_value[key($region_config_value)],
               '#attributes' => [
-                'class' => ['layout-options__option-value'],
+                'class' => 'region-options__option-value',
               ],
             ],
           ],
