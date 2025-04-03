@@ -1,0 +1,22 @@
+{%
+  set classes = [
+    'layout',
+    'layout--flex',
+  ]
+%}
+{% if content %}
+  <{{ content['#layout_tag'] }}{{ attributes.addClass(classes) }}>
+    <div class="layout__content">
+      {% if content['#header'] %}
+        <div class="layout__header">
+          {{ content['#header'] }}
+        </div>
+      {% endif %}
+
+      {% include "@s360_layout_builder/component/layout-regions.twig" with {
+        layout_regions_content: content,
+        layout_regions_region_attributes: region_attributes
+      } %}
+    </div>
+  </{{ content['#layout_tag'] }}>
+{% endif %}
