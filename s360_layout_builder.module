@@ -5,80 +5,52 @@
  * s360_layout_builder.module
  */
 
+use Drupal\Core\Cache\CacheBackendInterface;
+
 /**
  * Implements hook_theme().
  */
 function s360_layout_builder_theme($existing, $type, $theme, $path) {
-  return [
-    'paragraph__layout' => [
+  $layout_paragraph_bundles = _s360_layout_builder_get_layout_paragraph_bundles();
+
+  $layout_themes = [];
+
+  foreach ($layout_paragraph_bundles as $layout_paragraph_bundle) {
+    $layout_themes["paragraph__{$layout_paragraph_bundle}"] = [
       'template' => 'paragraph--layout' ,
       'base hook' => 'paragraph',
-    ],
-    'paragraph__layout__preview' => [
+    ];
+
+    $layout_themes["paragraph__{$layout_paragraph_bundle}__preview"] = [
       'template' => 'paragraph--layout--preview' ,
       'base hook' => 'paragraph',
-    ],
-    's360_layout_builder_one_column' => [
-      'template' => 's360-layout-builder-one-column',
-      'render element' => 'content',
-      'base hook' => 'layout',
-    ],
-    's360_layout_builder_one_column__admin' => [
-      'template' => 's360-layout-builder-one-column--admin',
-      'render element' => 'content',
-      'base hook' => 'layout',
-    ],
-    's360_layout_builder_two_column' => [
-      'template' => 's360-layout-builder-two-column',
-      'render element' => 'content',
-      'base hook' => 'layout',
-    ],
-    's360_layout_builder_two_column__admin' => [
-      'template' => 's360-layout-builder-two-column--admin',
-      'render element' => 'content',
-      'base hook' => 'layout',
-    ],
-    's360_layout_builder_three_column' => [
-      'template' => 's360-layout-builder-three-column',
-      'render element' => 'content',
-      'base hook' => 'layout',
-    ],
-    's360_layout_builder_three_column__admin' => [
-      'template' => 's360-layout-builder-three-column--admin',
-      'render element' => 'content',
-      'base hook' => 'layout',
-    ],
-    's360_layout_builder_four_column' => [
-      'template' => 's360-layout-builder-four-column',
-      'render element' => 'content',
-      'base hook' => 'layout',
-    ],
-    's360_layout_builder_four_column__admin' => [
-      'template' => 's360-layout-builder-four-column--admin',
-      'render element' => 'content',
-      'base hook' => 'layout',
-    ],
-    's360_layout_builder_accordion' => [
-      'template' => 's360-layout-builder-accordion',
-      'render element' => 'content',
-      'base hook' => 'layout',
-    ],
-    's360_layout_builder_accordion__admin' => [
-      'template' => 's360-layout-builder-accordion--admin',
-      'render element' => 'content',
-      'base hook' => 'layout',
-    ],
-    's360_layout_builder_flex' => [
-      'template' => 's360-layout-builder-one-column',
-      'render element' => 'content',
-      'base hook' => 'layout',
-    ],
-    's360_layout_builder_flex__admin' => [
-      'template' => 's360-layout-builder-one-column--admin',
-      'render element' => 'content',
-      'base hook' => 'layout',
-    ],
+    ];
+  }
+
+  $layouts = [
+    's360_layout_builder_one_column',
+    's360_layout_builder_two_column',
+    's360_layout_builder_three_column',
+    's360_layout_builder_four_column',
+    's360_layout_builder_accordion',
+    's360_layout_builder_flex',
   ];
+
+  foreach ($layouts as $layout) {
+    $layout_themes["{$layout}"] = [
+      'template' => str_replace('_', '-', $layout),
+      'render element' => 'content',
+      'base hook' => 'layout',
+    ];
+
+    $layout_themes["{$layout}__admin"] = [
+      'template' => str_replace('_', '-', "{$layout}--admin"),
+      'render element' => 'content',
+      'base hook' => 'layout',
+    ];
+  }
+
+  return $layout_themes;
 }
 
 /**
@@ -91,173 +63,15 @@ function s360_layout_builder_page_attachments_alter(array &$attachments) {
 }
 
 /**
- * Implements hook_preprocess_paragraph() for layout.
+ * Implements hook_preprocess_paragraph().
  */
-function s360_layout_builder_preprocess_paragraph__layout(&$variables) {
-  /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+function s360_layout_builder_preprocess_paragraph(&$variables) {
+  /** @var \Drupal\paragraph\Entity\Paragraph $paragraph */
   $paragraph = $variables['paragraph'];
-  $paragraph_is_published = $paragraph->isPublished() ? 'published' : 'unpublished';
 
-  if (_s360_layout_builder_is_admin_route()) {
-    $layout_configs = (array) $paragraph->getBehaviorSetting('layout_paragraphs', 'config')['layout'];
-
-    $variables['content']['layout_options'] = [
-      '#type' => 'html_tag',
-      '#tag' => 'div',
-      '#attributes' => [
-        'class' => 'layout-options',
-      ],
-      'child' => [
-        [
-          '#type' => 'html_tag',
-          '#tag' => 'div',
-          '#value' => 'Layout Options',
-          '#attributes' => [
-            'class' => 'layout-options__label',
-          ],
-        ],
-      ],
-    ];
-
-    foreach ($layout_configs as $layout_config_key => $layout_config_value) {
-      /*
-       * Patterns:
-       *  layout_[*]_options
-       *  layout_[one|two|three|four]_column_[*]_options
-       *  layout_flex_[*]_options
-       */
-      preg_match('/(?:layout_(?:(?:one|two|three|four)_column_|flex_)?)(.*?)_options/', $layout_config_key, $matches);
-
-      // When there is no layout option match or there is no value for that
-      // option, move onto the next value.
-      if (!$matches || !$layout_config_value[key($layout_config_value)]) {
-        continue;
-      }
-
-      $variables['content']['layout_options']['field_' . $matches[1]] = [
-        '#type' => 'html_tag',
-        '#tag' => 'div',
-        '#attributes' => [
-          'class' => 'layout-options__option',
-        ],
-        'child' => [
-          [
-            '#type' => 'html_tag',
-            '#tag' => 'div',
-            '#value' => ucwords(str_replace('_', ' ', $matches[1])),
-            '#attributes' => [
-              'class' => 'layout-options__option-label',
-            ],
-          ],
-          [
-            '#type' => 'html_tag',
-            '#tag' => 'div',
-            '#value' => $layout_config_value[key($layout_config_value)],
-            '#attributes' => [
-              'class' => 'layout-options__option-value',
-            ],
-          ],
-        ],
-      ];
-    }
-
-    $regions = (array) $paragraph->getBehaviorSetting('layout_paragraphs', 'config')['regions'];
-
-    foreach ($regions as $region_key => $region_configs) {
-      // Adds the region options at the top.
-      array_unshift($variables['content']['regions'][$region_key], [
-        '#type' => 'html_tag',
-        '#tag' => 'div',
-        '#attributes' => [
-          'class' => 'region-options',
-        ],
-        'child' => [
-          [
-            '#type' => 'html_tag',
-            '#tag' => 'div',
-            '#value' => 'Region Options',
-            '#attributes' => [
-              'class' => 'region-options__label',
-            ],
-          ],
-        ],
-      ]);
-
-      foreach ($region_configs as $region_config_key => $region_config_value) {
-        preg_match('/(?:layout_region_)(.*?)(?=_options)/', $region_config_key, $matches);
-
-        // When there is no layout option match or there is no value for that
-        // option, move onto the next value.
-        if (!$matches || !$region_config_value[key($region_config_value)]) {
-          continue;
-        }
-
-        $variables['content']['regions'][$region_key][0]['field_' . $matches[1]] = [
-          '#type' => 'html_tag',
-          '#tag' => 'div',
-          '#attributes' => [
-            'class' => 'region-options__option',
-          ],
-          'child' => [
-            [
-              '#type' => 'html_tag',
-              '#tag' => 'div',
-              '#value' => ucwords(str_replace('_', ' ', $matches[1])),
-              '#attributes' => [
-                'class' => 'region-options__option-label',
-              ],
-            ],
-            [
-              '#type' => 'html_tag',
-              '#tag' => 'div',
-              '#value' => gettype($region_config_value[key($region_config_value)]) == 'integer'
-                ? ($region_config_value[key($region_config_value)]
-                  ? 'true'
-                  : 'false')
-                : $region_config_value[key($region_config_value)],
-              '#attributes' => [
-                'class' => 'region-options__option-value',
-              ],
-            ],
-          ],
-        ];
-      }
-    }
+  if (in_array($paragraph->getType(), _s360_layout_builder_get_layout_paragraph_bundles())) {
+    _s360_layout_builder_process_layout_paragraph($variables);
   }
-
-  if (!_s360_layout_builder_is_admin_route()) {
-    $variables['content']['regions']['#layout_tag'] = 'div';
-
-    if ($paragraph->hasField('field_header')) {
-      $field_header = $paragraph->get('field_header');
-
-      if ($field_header->title !== '') {
-        if (strpos($paragraph->getBehaviorSetting('layout_paragraphs', 'layout'), 'accordion') !== FALSE) {
-          $header = [
-            '#type' => 'html_tag',
-            '#tag' => 'span',
-            '#value' => $field_header->title,
-          ];
-        }
-        else {
-          $header = $field_header->view([
-            'label' => 'hidden',
-          ]);
-        }
-
-        $variables['content']['regions']['#header'] = $header;
-        $variables['content']['regions']['#attributes']['class'][] = 'layout--has-header';
-        $variables['content']['regions']['#layout_tag'] = 'section';
-
-        // Only add "aria-labelledby" attribute if there is an heading_id.
-        if ($field_header->heading_id !== NULL) {
-          $variables['content']['regions']['#attributes']['aria-labelledby'] = $field_header->heading_id;
-        }
-      }
-    }
-  }
-
-  $variables['content']['regions']['#attributes']['class'][] = 'layout--' . $paragraph_is_published;
 }
 
 /**
@@ -297,4 +111,252 @@ function _s360_layout_builder_is_admin_route() {
     'layout_paragraphs.builder.edit_item',
     'layout_paragraphs.builder.insert',
   ]);
+}
+
+/**
+ * Helper function to get all paragraphs that have layout paragraphs.
+ *
+ * @return array
+ *   An array of paragraph bundles.
+ */
+function _s360_layout_builder_get_layout_paragraph_bundles() {
+  $cid = 's360_layout_builder:layout_paragraphs';
+  $data = \Drupal::cache()->get($cid);
+
+  if (empty($data)) {
+    $paragraph_bundles = \Drupal::service('entity_type.bundle.info')->getBundleInfo('paragraph');
+
+    $layout_paragraph_bundles = [];
+
+    foreach ($paragraph_bundles as $paragraph_bundle => $paragraph_label) {
+      /** @var \Drupal\paragraphs\Entity\ParagraphsType $paragraphs_type */
+      $paragraphs_type = \Drupal::entityTypeManager()->getStorage('paragraphs_type')->load($paragraph_bundle);
+
+      $layout_paragraphs_behavior = $paragraphs_type->getBehaviorPlugin('layout_paragraphs');
+      $layout_paragraphs_behavior_config = $layout_paragraphs_behavior->getConfiguration();
+
+      if (isset($layout_paragraphs_behavior_config['enabled']) && $layout_paragraphs_behavior_config['enabled']) {
+        $layout_paragraph_bundles[] = $paragraph_bundle;
+      }
+    }
+
+    \Drupal::cache()->set($cid, $layout_paragraph_bundles, CacheBackendInterface::CACHE_PERMANENT);
+  }
+  else {
+    $layout_paragraph_bundles = $data->data;
+  }
+
+  return $layout_paragraph_bundles;
+}
+
+/**
+ * Apply classes and additional content for a layout paragraph.
+ *
+ * @param array $variables
+ *   The array of variables passed in from Drupal's preprocess.
+ *
+ * @see s360_layout_builder_preprocess_paragraph()
+ */
+function _s360_layout_builder_process_layout_paragraph(array &$variables) {
+  /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
+  $paragraph = $variables['paragraph'];
+  $paragraph_is_published = $paragraph->isPublished() ? 'published' : 'unpublished';
+
+  if (_s360_layout_builder_is_admin_route()) {
+    $layout_paragraphs_layout = $paragraph->getBehaviorSetting('layout_paragraphs', 'layout');
+
+    $variables['content']['layout'] = [
+      '#type' => 'html_tag',
+      '#tag' => 'div',
+      '#attributes' => [
+        'class' => [
+          'field',
+          'field--label-inline',
+        ],
+      ],
+      'child' => [
+        [
+          '#type' => 'html_tag',
+          '#tag' => 'div',
+          '#value' => ucwords(str_replace('_', ' ', str_replace('layout_custom_', '', $layout_paragraphs_layout))),
+          '#attributes' => [
+            'class' => 'field__label',
+          ],
+        ],
+        [
+          '#type' => 'html_tag',
+          '#tag' => 'div',
+          '#value' => "#{$paragraph->id()}",
+          '#attributes' => [
+            'class' => 'field__item',
+          ],
+        ],
+      ],
+    ];
+
+    $layout_paragraphs_config = $paragraph->getBehaviorSetting('layout_paragraphs', 'config');
+
+    if (isset($layout_paragraphs_config['layout'])) {
+      $layout_config = (array) $layout_paragraphs_config['layout'];
+
+      $variables['content']['layout_options'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#attributes' => [
+          'class' => 'layout-options',
+        ],
+        'child' => [
+          [
+            '#type' => 'html_tag',
+            '#tag' => 'div',
+            '#value' => 'Layout Options',
+            '#attributes' => [
+              'class' => 'layout-options__label',
+            ],
+          ],
+        ],
+      ];
+
+      foreach ($layout_config as $layout_config_key => $layout_config_value) {
+        /*
+         * Patterns:
+         *  layout_[*]_options
+         *  layout_[one|two|three|four]_column_[*]_options
+         *  layout_flex_[*]_options
+         */
+        preg_match('/(?:layout_(?:(?:one|two|three|four)_column_|flex_)?)(.*?)_options/', $layout_config_key, $matches);
+
+        // When there is no layout option match or there is no value for that
+        // option, move onto the next value.
+        if (!$matches || !$layout_config_value[key($layout_config_value)]) {
+          continue;
+        }
+
+        $variables['content']['layout_options']['field_' . $matches[1]] = [
+          '#type' => 'html_tag',
+          '#tag' => 'div',
+          '#attributes' => [
+            'class' => 'layout-options__option',
+          ],
+          'child' => [
+            [
+              '#type' => 'html_tag',
+              '#tag' => 'div',
+              '#value' => ucwords(str_replace('_', ' ', $matches[1])),
+              '#attributes' => [
+                'class' => 'layout-options__option-label',
+              ],
+            ],
+            [
+              '#type' => 'html_tag',
+              '#tag' => 'div',
+              '#value' => $layout_config_value[key($layout_config_value)],
+              '#attributes' => [
+                'class' => 'layout-options__option-value',
+              ],
+            ],
+          ],
+        ];
+      }
+    }
+
+    if (isset($layout_paragraphs_config['regions'])) {
+      $regions = (array) $layout_paragraphs_config['regions'];
+
+      foreach ($regions as $region_key => $region_configs) {
+        // Adds the region options at the top.
+        array_unshift($variables['content']['regions'][$region_key], [
+          '#type' => 'html_tag',
+          '#tag' => 'div',
+          '#attributes' => [
+            'class' => 'region-options',
+          ],
+          'child' => [
+            [
+              '#type' => 'html_tag',
+              '#tag' => 'div',
+              '#value' => 'Region Options',
+              '#attributes' => [
+                'class' => 'region-options__label',
+              ],
+            ],
+          ],
+        ]);
+
+        foreach ($region_configs as $region_config_key => $region_config_value) {
+          preg_match('/(?:layout_region_)(.*?)(?=_options)/', $region_config_key, $matches);
+
+          // When there is no layout option match or there is no value for that
+          // option, move onto the next value.
+          if (!$matches || !$region_config_value[key($region_config_value)]) {
+            continue;
+          }
+
+          $variables['content']['regions'][$region_key][0]['field_' . $matches[1]] = [
+            '#type' => 'html_tag',
+            '#tag' => 'div',
+            '#attributes' => [
+              'class' => 'region-options__option',
+            ],
+            'child' => [
+              [
+                '#type' => 'html_tag',
+                '#tag' => 'div',
+                '#value' => ucwords(str_replace('_', ' ', $matches[1])),
+                '#attributes' => [
+                  'class' => 'region-options__option-label',
+                ],
+              ],
+              [
+                '#type' => 'html_tag',
+                '#tag' => 'div',
+                '#value' => gettype($region_config_value[key($region_config_value)]) == 'integer'
+                  ? ($region_config_value[key($region_config_value)]
+                    ? 'true'
+                    : 'false')
+                  : $region_config_value[key($region_config_value)],
+                '#attributes' => [
+                  'class' => 'region-options__option-value',
+                ],
+              ],
+            ],
+          ];
+        }
+      }
+    }
+  }
+
+  if (!_s360_layout_builder_is_admin_route()) {
+    $variables['content']['regions']['#layout_tag'] = 'div';
+
+    if ($paragraph->hasField('field_header')) {
+      $field_header = $paragraph->get('field_header');
+
+      if ($field_header->title !== '') {
+        if (strpos($paragraph->getBehaviorSetting('layout_paragraphs', 'layout'), 'accordion') !== FALSE) {
+          $header = [
+            '#type' => 'html_tag',
+            '#tag' => 'span',
+            '#value' => $field_header->title,
+          ];
+        }
+        else {
+          $header = $field_header->view([
+            'label' => 'hidden',
+          ]);
+        }
+
+        $variables['content']['regions']['#header'] = $header;
+        $variables['content']['regions']['#attributes']['class'][] = 'layout--has-header';
+        $variables['content']['regions']['#layout_tag'] = 'section';
+
+        // Only add "aria-labelledby" attribute if there is an heading_id.
+        if ($field_header->heading_id !== NULL) {
+          $variables['content']['regions']['#attributes']['aria-labelledby'] = $field_header->heading_id;
+        }
+      }
+    }
+  }
+
+  $variables['content']['regions']['#attributes']['class'][] = 'layout--' . $paragraph_is_published;
 }
