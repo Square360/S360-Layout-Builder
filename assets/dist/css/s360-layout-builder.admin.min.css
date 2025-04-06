@@ -148,8 +148,8 @@
   font-weight: bold;
   color: #999999;
 }
-.layout-options__options,
-.region-options__options {
+.layout-options__options-group,
+.region-options__options-group {
   display: flex;
   flex-wrap: wrap;
   column-gap: 20px;

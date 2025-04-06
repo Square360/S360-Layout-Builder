@@ -105,6 +105,7 @@ function s360_layout_builder_theme_suggestions_layout_alter(&$suggestions, $vari
  */
 function _s360_layout_builder_is_admin_route() {
   return in_array(Drupal::routeMatch()->getRouteName(), [
+    'node.add',
     'entity.node.edit_form',
     'entity.group.edit_form',
     'layout_paragraphs.builder.choose_component',
@@ -214,6 +215,14 @@ function _s360_layout_builder_process_layout_paragraph(array &$variables) {
               'class' => 'layout-options__label',
             ],
           ],
+        ],
+      ];
+
+      $variables['content']['layout_options']['layout_options_group'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#attributes' => [
+          'class' => 'layout-options__options-group',
         ],
       ];
 
