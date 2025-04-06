@@ -241,7 +241,7 @@ function _s360_layout_builder_process_layout_paragraph(array &$variables) {
           continue;
         }
 
-        $variables['content']['layout_options']['field_' . $matches[1]] = [
+        $variables['content']['layout_options']['layout_options_group']['field_' . $matches[1]] = [
           '#type' => 'html_tag',
           '#tag' => 'div',
           '#attributes' => [
