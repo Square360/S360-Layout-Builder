@@ -12,7 +12,7 @@ behavior_plugins:
   layout_paragraphs:
     enabled: true
     available_layouts:
-      layout_custom_onecol: 'One Column'
-      layout_custom_twocol: 'Two Column'
-      layout_custom_threecol: 'Three Column'
-      layout_custom_fourcol: 'Four Column'
+      layout_custom_one_column: 'One Column'
+      layout_custom_two_column: 'Two Column'
+      layout_custom_three_column: 'Three Column'
+      layout_custom_four_column: 'Four Column'
