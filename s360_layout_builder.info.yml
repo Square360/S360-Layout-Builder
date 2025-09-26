@@ -12,4 +12,4 @@ dependencies:
   - layout_paragraphs:layout_paragraphs
   - style_options:style_options
 core_version_requirement: ^10 || ^11
-version: '10.0.0'
+version: '10.1.0'
