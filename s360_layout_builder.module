@@ -170,34 +170,36 @@ function _s360_layout_builder_process_layout_paragraph(array &$variables) {
       $variables['attributes']['class'][] = 'paragraph--unpublished';
     }
 
-    $variables['content']['layout'] = [
-      '#type' => 'html_tag',
-      '#tag' => 'div',
-      '#attributes' => [
-        'class' => [
-          'field',
-          'field--label-inline',
-        ],
-      ],
-      'child' => [
-        [
-          '#type' => 'html_tag',
-          '#tag' => 'div',
-          '#value' => ucwords(str_replace('_', ' ', str_replace('layout_custom_', '', $layout_paragraphs_layout))),
-          '#attributes' => [
-            'class' => 'field__label',
+    if ($paragraph->id()) {
+      $variables['content']['layout'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#attributes' => [
+          'class' => [
+            'field',
+            'field--label-inline',
           ],
         ],
-        [
-          '#type' => 'html_tag',
-          '#tag' => 'div',
-          '#value' => "#{$paragraph->id()}",
-          '#attributes' => [
-            'class' => 'field__item',
+        'child' => [
+          [
+            '#type' => 'html_tag',
+            '#tag' => 'div',
+            '#value' => ucwords(str_replace('_', ' ', str_replace('layout_custom_', '', $layout_paragraphs_layout))),
+            '#attributes' => [
+              'class' => 'field__label',
+            ],
+          ],
+          [
+            '#type' => 'html_tag',
+            '#tag' => 'div',
+            '#value' => "#{$paragraph->id()}",
+            '#attributes' => [
+              'class' => 'field__item',
+            ],
           ],
         ],
-      ],
-    ];
+      ];
+    }
 
     $layout_paragraphs_config = $paragraph->getBehaviorSetting('layout_paragraphs', 'config');
 
