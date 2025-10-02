@@ -161,10 +161,14 @@ function _s360_layout_builder_get_layout_paragraph_bundles() {
 function _s360_layout_builder_process_layout_paragraph(array &$variables) {
   /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
   $paragraph = $variables['paragraph'];
-  $paragraph_is_published = $paragraph->isPublished() ? 'published' : 'unpublished';
+  $paragraph_is_published = $paragraph->isPublished();
 
   if (_s360_layout_builder_is_admin_route()) {
     $layout_paragraphs_layout = $paragraph->getBehaviorSetting('layout_paragraphs', 'layout');
+
+    if (!$paragraph_is_published) {
+      $variables['attributes']['class'][] = 'paragraph--unpublished';
+    }
 
     $variables['content']['layout'] = [
       '#type' => 'html_tag',
@@ -338,34 +342,31 @@ function _s360_layout_builder_process_layout_paragraph(array &$variables) {
   if (!_s360_layout_builder_is_admin_route()) {
     $variables['content']['regions']['#layout_tag'] = 'div';
 
-    if ($paragraph->hasField('field_header')) {
-      $field_header = $paragraph->get('field_header');
+    if (!$paragraph_is_published) {
+      $variables['content']['regions']['#attributes']['data-unpublished'] = 'layout';
+    }
 
-      if ($field_header->title !== '') {
-        if (strpos($paragraph->getBehaviorSetting('layout_paragraphs', 'layout'), 'accordion') !== FALSE) {
-          $header = [
-            '#type' => 'html_tag',
-            '#tag' => 'span',
-            '#value' => $field_header->title,
-          ];
-        }
-        else {
-          $header = $field_header->view([
-            'label' => 'hidden',
-          ]);
-        }
+    $field_header = $paragraph?->field_header;
 
-        $variables['content']['regions']['#header'] = $header;
-        $variables['content']['regions']['#attributes']['class'][] = 'layout--has-header';
-        $variables['content']['regions']['#layout_tag'] = 'section';
+    if ($field_header->getValue()) {
+      $field_header = $field_header->view(['label' => 'hidden']);
+      $field_header_id = $field_header[0]['#header_id'];
 
-        // Only add "aria-labelledby" attribute if there is an heading_id.
-        if ($field_header->heading_id !== NULL) {
-          $variables['content']['regions']['#attributes']['aria-labelledby'] = $field_header->heading_id;
-        }
+      if (strpos($paragraph->getBehaviorSetting('layout_paragraphs', 'layout'), 'accordion') !== FALSE) {
+        $header = [
+          '#type' => 'html_tag',
+          '#tag' => 'span',
+          '#value' => $field_header['#items']->title,
+        ];
       }
+      else {
+        $header = $field_header;
+      }
+
+      $variables['content']['regions']['#header'] = $header;
+      $variables['content']['regions']['#attributes']['class'][] = 'layout--has-header';
+      $variables['content']['regions']['#layout_tag'] = 'section';
+      $variables['content']['regions']['#attributes']['aria-labelledby'] = $field_header_id;
     }
   }
-
-  $variables['content']['regions']['#attributes']['class'][] = 'layout--' . $paragraph_is_published;
 }
