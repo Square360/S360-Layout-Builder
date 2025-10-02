@@ -14,22 +14,7 @@ label: Header
 description: ''
 required: false
 translatable: false
-default_value:
-  -
-    attributes: {  }
-    text:
-      heading_tag: h2
-      title: ''
-      subtitle: ''
-    subtitle: ''
-    uri: 'route:<nolink>'
-    title: ''
-    options:
-      heading_tag: h2
-      visually_hidden: 0
-      size: ''
-      styles: {  }
-      new_window: 0
+default_value: {  }
 default_value_callback: ''
 settings:
   link_type: '17'
