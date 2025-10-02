@@ -15,9 +15,9 @@
         }
     ],
     "require": {
-        "drupal/advanced_header_field": "*",
-        "drupal/layout_paragraphs": "^2.0",
-        "drupal/style_options": "^1.1"
+        "drupal/advanced_header_field": "^2.0",
+        "drupal/layout_paragraphs": "*",
+        "drupal/style_options": "*"
     },
     "require-dev": {
         "drupal/coder": "^8.3",
