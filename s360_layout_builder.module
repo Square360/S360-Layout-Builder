@@ -6,6 +6,8 @@
  */
 
 use Drupal\Core\Cache\CacheBackendInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\s360_layout_builder\FormCallbacks;
 
 /**
  * Implements hook_theme().
@@ -163,9 +165,33 @@ function _s360_layout_builder_process_layout_paragraph(array &$variables) {
   $paragraph = $variables['paragraph'];
   $paragraph_is_published = $paragraph->isPublished();
 
-  if (_s360_layout_builder_is_admin_route()) {
-    $layout_paragraphs_layout = $paragraph->getBehaviorSetting('layout_paragraphs', 'layout');
+  $layout_paragraphs_layout = $paragraph->getBehaviorSetting('layout_paragraphs', 'layout');
 
+  if (!$paragraph_is_published) {
+    $variables['content']['regions']['#attributes']['data-unpublished'] = 'layout';
+  }
+
+  $variables['content']['regions']['#layout_tag'] = 'div';
+
+  $field_header = $paragraph?->field_header;
+
+  if ($field_header->getValue()) {
+    if (str_contains($layout_paragraphs_layout, 'accordion')) {
+      $variables['content']['regions']['#summary'] = $field_header->view([
+        'type' => 's360_layout_builder_accordion_summary',
+      ]);
+    }
+    else {
+      $field_header = $field_header->view(['label' => 'hidden']);
+
+      $variables['content']['regions']['#attributes']['aria-labelledby'] = $field_header[0]['#header_id'];
+      $variables['content']['regions']['#layout_tag'] = 'section';
+      $variables['content']['regions']['#attributes']['class'][] = 'layout--has-header';
+      $variables['content']['regions']['#header'] = $field_header;
+    }
+  }
+
+  if (_s360_layout_builder_is_admin_route()) {
     if (!$paragraph_is_published) {
       $variables['attributes']['class'][] = 'paragraph--unpublished';
     }
@@ -192,7 +218,7 @@ function _s360_layout_builder_process_layout_paragraph(array &$variables) {
           [
             '#type' => 'html_tag',
             '#tag' => 'div',
-            '#value' => "#{$paragraph->id()}",
+            '#value' => "(ID: #{$paragraph->id()})",
             '#attributes' => [
               'class' => 'field__item',
             ],
@@ -340,35 +366,39 @@ function _s360_layout_builder_process_layout_paragraph(array &$variables) {
       }
     }
   }
+}
 
-  if (!_s360_layout_builder_is_admin_route()) {
-    $variables['content']['regions']['#layout_tag'] = 'div';
-
-    if (!$paragraph_is_published) {
-      $variables['content']['regions']['#attributes']['data-unpublished'] = 'layout';
-    }
-
-    $field_header = $paragraph?->field_header;
-
-    if ($field_header->getValue()) {
-      $field_header = $field_header->view(['label' => 'hidden']);
-      $field_header_id = $field_header[0]['#header_id'];
-
-      if (strpos($paragraph->getBehaviorSetting('layout_paragraphs', 'layout'), 'accordion') !== FALSE) {
-        $header = [
-          '#type' => 'html_tag',
-          '#tag' => 'span',
-          '#value' => $field_header['#items']->title,
-        ];
+/**
+ * Custom pre-render function to remove data-once attribute.
+ */
+function s360_layout_builder_pre_render_form(array $form) {
+  foreach ($form as &$field) {
+    if (is_array($field) && isset($field['widget'])) {
+      foreach ($field['widget'] as $delta => &$widget_item) {
+        if (is_numeric($delta) && isset($widget_item['header']['header_options']['show_in_jump_menu'])) {
+          $widget_item['header']['header_options']['show_in_jump_menu']['#states'] = [
+            'visible' => [
+              ':input[name="layout_paragraphs[layout]"]' => ['!value' => 'layout_custom_accordion'],
+            ],
+          ];
+        }
+        // if (is_numeric($delta) && isset($widget_item['header']['header_options']['show_in_jump_menu'])) {
+        //   $widget_item['header']['heading']['title']['#states'] = [
+        //     'required' => [
+        //       ':input[name="layout_paragraphs[layout]"]' => ['value' => 'layout_custom_accordion'],
+        //     ]
+        //   ];
+        // }
       }
-      else {
-        $header = $field_header;
-      }
-
-      $variables['content']['regions']['#header'] = $header;
-      $variables['content']['regions']['#attributes']['class'][] = 'layout--has-header';
-      $variables['content']['regions']['#layout_tag'] = 'section';
-      $variables['content']['regions']['#attributes']['aria-labelledby'] = $field_header_id;
     }
   }
+  return $form;
+}
+
+function s360_layout_builder_form_layout_paragraphs_component_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // $form['#pre_render'][] = [FormCallbacks::class, 'preRenderForm'];
+
+
+
+  $form['#after_build'][] = 's360_layout_builder_pre_render_form';
 }
