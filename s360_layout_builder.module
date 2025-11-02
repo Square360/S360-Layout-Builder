@@ -7,7 +7,6 @@
 
 use Drupal\Core\Cache\CacheBackendInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\s360_layout_builder\FormCallbacks;
 
 /**
  * Implements hook_theme().
@@ -171,6 +170,7 @@ function _s360_layout_builder_process_layout_paragraph(array &$variables) {
     $variables['content']['regions']['#attributes']['data-unpublished'] = 'layout';
   }
 
+  $variables['content']['regions']['#attributes']['id'] = 'layout-' . $paragraph->id();
   $variables['content']['regions']['#layout_tag'] = 'div';
 
   $field_header = $paragraph?->field_header;
@@ -369,36 +369,8 @@ function _s360_layout_builder_process_layout_paragraph(array &$variables) {
 }
 
 /**
- * Custom pre-render function to remove data-once attribute.
+ * Implements hook_form_FORM_ID_alter().
  */
-function s360_layout_builder_pre_render_form(array $form) {
-  foreach ($form as &$field) {
-    if (is_array($field) && isset($field['widget'])) {
-      foreach ($field['widget'] as $delta => &$widget_item) {
-        if (is_numeric($delta) && isset($widget_item['header']['header_options']['show_in_jump_menu'])) {
-          $widget_item['header']['header_options']['show_in_jump_menu']['#states'] = [
-            'visible' => [
-              ':input[name="layout_paragraphs[layout]"]' => ['!value' => 'layout_custom_accordion'],
-            ],
-          ];
-        }
-        // if (is_numeric($delta) && isset($widget_item['header']['header_options']['show_in_jump_menu'])) {
-        //   $widget_item['header']['heading']['title']['#states'] = [
-        //     'required' => [
-        //       ':input[name="layout_paragraphs[layout]"]' => ['value' => 'layout_custom_accordion'],
-        //     ]
-        //   ];
-        // }
-      }
-    }
-  }
-  return $form;
-}
-
 function s360_layout_builder_form_layout_paragraphs_component_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  // $form['#pre_render'][] = [FormCallbacks::class, 'preRenderForm'];
-
-
-
-  $form['#after_build'][] = 's360_layout_builder_pre_render_form';
+  $form['#attached']['library'][] = 's360_layout_builder/conditional-header-fields';
 }
