@@ -3,3 +3,10 @@ admin:
   css:
     theme:
       assets/dist/css/s360-layout-builder.admin.min.css: {}
+
+conditional-header-fields:
+  js:
+    js/conditional-header-fields.js: {}
+  dependencies:
+    - core/drupal
+    - core/once
