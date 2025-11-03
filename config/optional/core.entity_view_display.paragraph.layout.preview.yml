@@ -11,12 +11,6 @@ id: paragraph.layout.preview
 targetEntityType: paragraph
 bundle: layout
 mode: preview
-content:
-  field_header:
-    weight: 0
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    type: advanced_header_field_string
-    region: content
-hidden: {  }
+content: {  }
+hidden:
+  field_header: true

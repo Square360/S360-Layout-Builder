@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Cache\CacheBackendInterface;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Implements hook_theme().
@@ -161,39 +162,70 @@ function _s360_layout_builder_get_layout_paragraph_bundles() {
 function _s360_layout_builder_process_layout_paragraph(array &$variables) {
   /** @var \Drupal\paragraphs\Entity\Paragraph $paragraph */
   $paragraph = $variables['paragraph'];
-  $paragraph_is_published = $paragraph->isPublished() ? 'published' : 'unpublished';
+  $paragraph_is_published = $paragraph->isPublished();
+
+  $layout_paragraphs_layout = $paragraph->getBehaviorSetting('layout_paragraphs', 'layout');
+
+  if (!$paragraph_is_published) {
+    $variables['content']['regions']['#attributes']['data-unpublished'] = 'layout';
+  }
+
+  $variables['content']['regions']['#attributes']['id'] = 'layout-' . $paragraph->id();
+  $variables['content']['regions']['#layout_tag'] = 'div';
+
+  $field_header = $paragraph?->field_header;
+
+  if ($field_header->getValue()) {
+    if (str_contains($layout_paragraphs_layout, 'accordion')) {
+      $variables['content']['regions']['#summary'] = $field_header->view([
+        'type' => 's360_layout_builder_accordion_summary',
+      ]);
+    }
+    else {
+      $field_header = $field_header->view(['label' => 'hidden']);
+
+      $variables['content']['regions']['#attributes']['aria-labelledby'] = $field_header[0]['#header_id'];
+      $variables['content']['regions']['#layout_tag'] = 'section';
+      $variables['content']['regions']['#attributes']['class'][] = 'layout--has-header';
+      $variables['content']['regions']['#header'] = $field_header;
+    }
+  }
 
   if (_s360_layout_builder_is_admin_route()) {
-    $layout_paragraphs_layout = $paragraph->getBehaviorSetting('layout_paragraphs', 'layout');
+    if (!$paragraph_is_published) {
+      $variables['attributes']['class'][] = 'paragraph--unpublished';
+    }
 
-    $variables['content']['layout'] = [
-      '#type' => 'html_tag',
-      '#tag' => 'div',
-      '#attributes' => [
-        'class' => [
-          'field',
-          'field--label-inline',
-        ],
-      ],
-      'child' => [
-        [
-          '#type' => 'html_tag',
-          '#tag' => 'div',
-          '#value' => ucwords(str_replace('_', ' ', str_replace('layout_custom_', '', $layout_paragraphs_layout))),
-          '#attributes' => [
-            'class' => 'field__label',
+    if ($paragraph->id()) {
+      $variables['content']['layout'] = [
+        '#type' => 'html_tag',
+        '#tag' => 'div',
+        '#attributes' => [
+          'class' => [
+            'field',
+            'field--label-inline',
           ],
         ],
-        [
-          '#type' => 'html_tag',
-          '#tag' => 'div',
-          '#value' => "#{$paragraph->id()}",
-          '#attributes' => [
-            'class' => 'field__item',
+        'child' => [
+          [
+            '#type' => 'html_tag',
+            '#tag' => 'div',
+            '#value' => ucwords(str_replace('_', ' ', str_replace('layout_custom_', '', $layout_paragraphs_layout))),
+            '#attributes' => [
+              'class' => 'field__label',
+            ],
+          ],
+          [
+            '#type' => 'html_tag',
+            '#tag' => 'div',
+            '#value' => "(ID: #{$paragraph->id()})",
+            '#attributes' => [
+              'class' => 'field__item',
+            ],
           ],
         ],
-      ],
-    ];
+      ];
+    }
 
     $layout_paragraphs_config = $paragraph->getBehaviorSetting('layout_paragraphs', 'config');
 
@@ -334,38 +366,11 @@ function _s360_layout_builder_process_layout_paragraph(array &$variables) {
       }
     }
   }
+}
 
-  if (!_s360_layout_builder_is_admin_route()) {
-    $variables['content']['regions']['#layout_tag'] = 'div';
-
-    if ($paragraph->hasField('field_header')) {
-      $field_header = $paragraph->get('field_header');
-
-      if ($field_header->title !== '') {
-        if (strpos($paragraph->getBehaviorSetting('layout_paragraphs', 'layout'), 'accordion') !== FALSE) {
-          $header = [
-            '#type' => 'html_tag',
-            '#tag' => 'span',
-            '#value' => $field_header->title,
-          ];
-        }
-        else {
-          $header = $field_header->view([
-            'label' => 'hidden',
-          ]);
-        }
-
-        $variables['content']['regions']['#header'] = $header;
-        $variables['content']['regions']['#attributes']['class'][] = 'layout--has-header';
-        $variables['content']['regions']['#layout_tag'] = 'section';
-
-        // Only add "aria-labelledby" attribute if there is an heading_id.
-        if ($field_header->heading_id !== NULL) {
-          $variables['content']['regions']['#attributes']['aria-labelledby'] = $field_header->heading_id;
-        }
-      }
-    }
-  }
-
-  $variables['content']['regions']['#attributes']['class'][] = 'layout--' . $paragraph_is_published;
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function s360_layout_builder_form_layout_paragraphs_component_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['#attached']['library'][] = 's360_layout_builder/conditional-header-fields';
 }
