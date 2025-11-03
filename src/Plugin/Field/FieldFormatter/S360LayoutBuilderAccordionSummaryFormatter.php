@@ -52,6 +52,9 @@ class S360LayoutBuilderAccordionSummaryFormatter extends FormatterBase {
       '#tag' => 'summary',
       '#value' => $values['title'],
       '#attributes' => [
+        'class' => [
+          'layout__summary',
+        ],
         'id' => !empty($options['custom_anchor_id'])
           ? $options['custom_anchor_id']
           : AdvancedHeaderFieldInterface::createAnchorIdFromText($values['title'], $parent_id),

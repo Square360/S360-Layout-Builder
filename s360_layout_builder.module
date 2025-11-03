@@ -176,9 +176,12 @@ function _s360_layout_builder_process_layout_paragraph(array &$variables) {
   $field_header = $paragraph?->field_header;
 
   if ($field_header->getValue()) {
+    $variables['content']['regions']['#attributes']['class'][] = 'layout--has-header';
+
     if (str_contains($layout_paragraphs_layout, 'accordion')) {
       $variables['content']['regions']['#summary'] = $field_header->view([
         'type' => 's360_layout_builder_accordion_summary',
+        'label' => 'hidden',
       ]);
     }
     else {
@@ -186,7 +189,6 @@ function _s360_layout_builder_process_layout_paragraph(array &$variables) {
 
       $variables['content']['regions']['#attributes']['aria-labelledby'] = $field_header[0]['#header_id'];
       $variables['content']['regions']['#layout_tag'] = 'section';
-      $variables['content']['regions']['#attributes']['class'][] = 'layout--has-header';
       $variables['content']['regions']['#header'] = $field_header;
     }
   }
