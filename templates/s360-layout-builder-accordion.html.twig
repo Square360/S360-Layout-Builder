@@ -7,9 +7,9 @@
 {% if content %}
   <div{{ attributes.addClass(classes) }}>
     <div class="layout__content">
-      {% if content['#header'] %}
+      {% if content['#summary'] %}
         <details class="layout__details">
-          <summary class="layout__summary">{{ content['#header'] }}</summary>
+          {{ content['#summary'] }}
       {% endif %}
 
       {% include "@s360_layout_builder/component/layout-regions.twig" with {
@@ -17,7 +17,7 @@
         layout_regions_region_attributes: region_attributes
       } %}
 
-      {% if content['#header'] %}
+      {% if content['#summary'] %}
         </details>
       {% endif %}
     </div>
