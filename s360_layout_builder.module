@@ -174,8 +174,9 @@ function _s360_layout_builder_process_layout_paragraph(array &$variables) {
   $variables['content']['regions']['#layout_tag'] = 'div';
 
   $field_header = $paragraph?->field_header;
+  $field_header_value = $field_header?->first()?->getValue();
 
-  if ($field_header->getValue()) {
+  if (!empty($field_header_value['title'])) {
     $variables['content']['regions']['#attributes']['class'][] = 'layout--has-header';
 
     if (str_contains($layout_paragraphs_layout, 'accordion')) {
