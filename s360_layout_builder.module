@@ -294,7 +294,11 @@ function _s360_layout_builder_process_layout_paragraph(array &$variables) {
             [
               '#type' => 'html_tag',
               '#tag' => 'div',
-              '#value' => $layout_config_value[key($layout_config_value)],
+              '#value' => gettype($layout_config_value[key($layout_config_value)]) == 'integer'
+                ? ($layout_config_value[key($layout_config_value)]
+                  ? 'true'
+                  : 'false')
+                : $layout_config_value[key($layout_config_value)],
               '#attributes' => [
                 'class' => 'layout-options__option-value',
               ],
