@@ -39,7 +39,12 @@ class Checkbox extends StyleOptionPluginBase {
    */
   public function build(array $build) {
     if ($this->getValue('checkbox')) {
-      $build['#attributes']['class'][] = $this->getConfiguration()['class'];
+      if ($this->hasConfiguration('class')) {
+        $build['#attributes']['class'][] = $this->getConfiguration()['class'];
+      }
+      elseif ($this->hasConfiguration('attribute')) {
+        $build['#attributes']['data-' . $this->getConfiguration()['attribute']] = '';
+      }
     }
 
     return $build;
