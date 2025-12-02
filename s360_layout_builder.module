@@ -105,14 +105,20 @@ function s360_layout_builder_theme_suggestions_layout_alter(&$suggestions, $vari
  *   Returns true if the current route is found in the array, false otherwise.
  */
 function _s360_layout_builder_is_admin_route() {
-  return in_array(Drupal::routeMatch()->getRouteName(), [
+  $admin_paths = [
     'node.add',
     'entity.node.edit_form',
     'entity.group.edit_form',
-    'layout_paragraphs.builder.choose_component',
-    'layout_paragraphs.builder.edit_item',
-    'layout_paragraphs.builder.insert',
-  ]);
+    'layout_paragraphs.*',
+  ];
+
+  $url = Drupal::routeMatch()->getRouteName();
+
+  $result = array_filter($admin_paths, function ($v) use ($url) {
+    return preg_match('~' . $v . '~', $url);
+  });
+
+  return count($result) ? TRUE : FALSE;
 }
 
 /**
