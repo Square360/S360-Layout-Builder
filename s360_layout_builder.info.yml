@@ -11,4 +11,4 @@ dependencies:
   - advanced_header_field:advanced_header_field
   - layout_paragraphs:layout_paragraphs
   - style_options:style_options
-core_version_requirement: ^10 || ^11
+core_version_requirement: ^11 || ^12
