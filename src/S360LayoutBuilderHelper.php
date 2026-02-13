@@ -349,4 +349,14 @@ class S360LayoutBuilderHelper {
     }
   }
 
+  /**
+   * Gets the logger service.
+   *
+   * @return \Psr\Log\LoggerInterface
+   *   The logger service.
+   */
+  public function logger(): LoggerInterface {
+    return $this->logger;
+  }
+
 }

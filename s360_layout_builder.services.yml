@@ -7,6 +7,7 @@ services:
       - '@cache.default'
       - '@current_route_match'
       - '@logger.channel.s360_layout_builder'
+  Drupal\s360_layout_builder\S360LayoutBuilderHelper: '@s360_layout_builder.helper'
 
   logger.channel.s360_layout_builder:
     parent: logger.channel_base

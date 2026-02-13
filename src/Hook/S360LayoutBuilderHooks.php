@@ -124,7 +124,7 @@ class S360LayoutBuilderHooks {
   public function themeSuggestionsLayoutAlter(array &$suggestions, array $variables): void {
     $theme = $variables['content']['#theme'];
 
-    if ($this->s360LayoutBuilderHelper->isAdminRoute()) {
+    if ($this->s360LayoutBuilderHelper->isLayoutParagraphsRoute()) {
       if (str_contains($theme, 's360_layout_builder')) {
         $suggestions[] = "{$theme}__admin";
       }
