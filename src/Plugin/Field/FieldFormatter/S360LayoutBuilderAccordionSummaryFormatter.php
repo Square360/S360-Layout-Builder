@@ -6,6 +6,7 @@ use Drupal\advanced_header_field\AdvancedHeaderFieldInterface;
 use Drupal\Core\Field\FieldItemInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
+use Drupal\Core\Render\Markup;
 
 /**
  * Plugin implementation of the 's360_layout_builder' summary formatter.
@@ -50,7 +51,7 @@ class S360LayoutBuilderAccordionSummaryFormatter extends FormatterBase {
     $element = [
       '#type' => 'html_tag',
       '#tag' => 'summary',
-      '#value' => $values['title'],
+      '#value' => Markup::create('<span>' . $values['title'] . '</span>'),
       '#attributes' => [
         'class' => [
           'layout__summary',
