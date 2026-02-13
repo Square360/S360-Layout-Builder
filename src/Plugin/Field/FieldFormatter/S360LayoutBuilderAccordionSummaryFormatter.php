@@ -7,6 +7,7 @@ use Drupal\Core\Field\Attribute\FieldFormatter;
 use Drupal\Core\Field\FieldItemInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
+use Drupal\Core\Render\Markup;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 
 /**
@@ -51,7 +52,7 @@ class S360LayoutBuilderAccordionSummaryFormatter extends FormatterBase {
     $element = [
       '#type' => 'html_tag',
       '#tag' => 'summary',
-      '#value' => $values['title'],
+      '#value' => Markup::create('<span>' . $values['title'] . '</span>'),
       '#attributes' => [
         'class' => [
           'layout__summary',
