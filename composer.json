@@ -2,12 +2,12 @@
     "name": "square360/s360_layout_builder",
     "description": "Square360 Layout Builder",
     "type": "drupal-module",
+    "license": "GPL-2.0-or-later",
     "keywords": [
         "Drupal",
         "Paragraph",
         "Layouts"
     ],
-    "license": "GPL-2.0-or-later",
     "repositories": [
         {
             "type": "composer",

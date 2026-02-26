@@ -14,7 +14,7 @@ use Drupal\s360_layout_builder\S360LayoutBuilderHelper;
 /**
  * Provides hook implementations for S360 Layout Builder.
  */
-class S360LayoutBuilderHooks {
+final class S360LayoutBuilderHooks {
 
   use StringTranslationTrait;
 
@@ -31,7 +31,7 @@ class S360LayoutBuilderHooks {
   public function __construct(
     protected readonly AdminContext $adminContext,
     protected readonly ConfigFactoryInterface $configFactory,
-    protected readonly S360LayoutBuilderHelper $s360LayoutBuilderHelper
+    protected readonly S360LayoutBuilderHelper $s360LayoutBuilderHelper,
   ) {}
 
   /**
@@ -124,7 +124,7 @@ class S360LayoutBuilderHooks {
   public function themeSuggestionsLayoutAlter(array &$suggestions, array $variables): void {
     $theme = $variables['content']['#theme'];
 
-    if ($this->s360LayoutBuilderHelper->isLayoutParagraphsRoute()) {
+    if ($this->s360LayoutBuilderHelper->isEditContext()) {
       if (str_contains($theme, 's360_layout_builder')) {
         $suggestions[] = "{$theme}__admin";
       }

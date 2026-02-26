@@ -13,7 +13,7 @@ use Psr\Log\LoggerInterface;
 /**
  * Helper class for s360 layout builder operations.
  */
-class S360LayoutBuilderHelper {
+final class S360LayoutBuilderHelper {
 
   /**
    * Construct an S360LayoutBuilderHelper service.
@@ -34,37 +34,29 @@ class S360LayoutBuilderHelper {
     protected readonly EntityTypeBundleInfoInterface $entityTypeBundleInfo,
     protected readonly CacheBackendInterface $cache,
     protected readonly RouteMatchInterface $routeMatch,
-    protected LoggerInterface $logger
+    protected LoggerInterface $logger,
   ) {}
 
   /**
-   * Checks the route name to see if it's an "admin route".
+   * Checks if the current route is an edit context.
+   *
+   * This includes any entity edit form or layout_paragraphs route where
+   * layout paragraph content may be edited.
    *
    * @return bool
-   *   Returns true if the current route is found in the array, false otherwise.
+   *   TRUE if on an entity edit form or layout_paragraphs route.
    */
-  public function isAdminRoute(): bool {
-    $admin_paths = [
-      'node.add',
-      'entity.node.edit_form',
-      'entity.group.edit_form',
-      'layout_paragraphs',
-    ];
-
+  public function isEditContext(): bool {
     $route_name = $this->routeMatch->getRouteName();
 
     if (empty($route_name)) {
       return FALSE;
     }
 
-    // Check each pattern and return immediately on first match.
-    foreach ($admin_paths as $pattern) {
-      if (str_starts_with($route_name, $pattern)) {
-        return TRUE;
-      }
-    }
-
-    return FALSE;
+    return (
+      str_contains($route_name, 'edit_form') ||
+      str_contains($route_name, 'layout_paragraphs')
+    );
   }
 
   /**
@@ -168,7 +160,7 @@ class S360LayoutBuilderHelper {
       }
     }
 
-    if (S360LayoutBuilderHelper::isAdminRoute()) {
+    if (S360LayoutBuilderHelper::isEditContext()) {
       if (!$paragraph_is_published) {
         $variables['attributes']['class'][] = 'paragraph--unpublished';
       }
@@ -355,7 +347,7 @@ class S360LayoutBuilderHelper {
    * @return \Psr\Log\LoggerInterface
    *   The logger service.
    */
-  public function logger(): LoggerInterface {
+  public function getLogger(): LoggerInterface {
     return $this->logger;
   }
 
