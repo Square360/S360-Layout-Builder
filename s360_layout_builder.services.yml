@@ -1,0 +1,15 @@
+services:
+  s360_layout_builder.helper:
+    class: Drupal\s360_layout_builder\S360LayoutBuilderHelper
+    arguments:
+      - '@entity_type.manager'
+      - '@entity_type.bundle.info'
+      - '@cache.default'
+      - '@current_route_match'
+      - '@logger.channel.s360_layout_builder'
+  Drupal\s360_layout_builder\S360LayoutBuilderHelper: '@s360_layout_builder.helper'
+
+  logger.channel.s360_layout_builder:
+    parent: logger.channel_base
+    arguments: ['s360_layout_builder']
+    public: false

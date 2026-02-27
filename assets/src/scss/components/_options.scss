@@ -1,6 +1,7 @@
 .layout-options,
 .region-options {
   display: flex;
+  flex-wrap: wrap;
   column-gap: 20px;
   margin-bottom: 10px;
   pointer-events: none;
@@ -19,6 +20,7 @@
 
   &__option {
     display: flex;
+    flex-wrap: wrap;
   }
 
   &__option-label {
