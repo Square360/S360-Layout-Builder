@@ -2,11 +2,13 @@
 
 namespace Drupal\s360_layout_builder\Plugin\Field\FieldFormatter;
 
-use Drupal\advanced_header_field\AdvancedHeaderFieldInterface;
+use Drupal\advanced_header_field\AdvancedHeaderFieldHelper;
 use Drupal\Core\Field\Attribute\FieldFormatter;
+use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\FormatterBase;
+use Drupal\Core\Path\PathValidatorInterface;
 use Drupal\Core\Render\Markup;
 use Drupal\Core\StringTranslation\TranslatableMarkup;
 
@@ -21,6 +23,30 @@ use Drupal\Core\StringTranslation\TranslatableMarkup;
   ]
 )]
 class S360LayoutBuilderAccordionSummaryFormatter extends FormatterBase {
+
+  /**
+   * The advanced header field helper service.
+   *
+   * @var \Drupal\advanced_header_field\AdvancedHeaderFieldHelper
+   */
+  protected $advancedHeaderFieldHelper;
+
+  /**
+   * {@inheritdoc}
+   */
+  public function __construct(
+    $plugin_id,
+    $plugin_definition,
+    FieldDefinitionInterface $field_definition,
+    array $settings,
+    $label,
+    $view_mode,
+    array $third_party_settings,
+    protected readonly AdvancedHeaderFieldHelper $advanced_header_field_helper,
+  ) {
+    parent::__construct($plugin_id, $plugin_definition, $field_definition, $settings, $label, $view_mode, $third_party_settings);
+    $this->advancedHeaderFieldHelper = $advanced_header_field_helper;
+  }
 
   /**
    * {@inheritdoc}
@@ -47,7 +73,7 @@ class S360LayoutBuilderAccordionSummaryFormatter extends FormatterBase {
 
     $options = $values['options'];
 
-    $parent_id = AdvancedHeaderFieldInterface::getHeaderParentId($item);
+    $parent_id = $this->advancedHeaderFieldHelper->getHeaderParentId($item);
 
     $element = [
       '#type' => 'html_tag',
@@ -59,7 +85,7 @@ class S360LayoutBuilderAccordionSummaryFormatter extends FormatterBase {
         ],
         'id' => !empty($options['custom_anchor_id'])
           ? $options['custom_anchor_id']
-          : AdvancedHeaderFieldInterface::createAnchorIdFromText($values['title'], $parent_id),
+          : $this->advancedHeaderFieldHelper->createAnchorIdFromText($values['title'], $parent_id),
       ],
     ];
 
