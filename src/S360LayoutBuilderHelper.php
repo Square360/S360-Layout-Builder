@@ -152,7 +152,11 @@ final class S360LayoutBuilderHelper {
           else {
             $field_header = $field_header->view(['label' => 'hidden']);
 
-            $variables['content']['regions']['#attributes']['aria-labelledby'] = $field_header[0]['#header_id'];
+            // Guard against missing #header_id (older paragraphs predating the
+            // advanced_header_field, or rendered with a non-HTML formatter).
+            if (isset($field_header[0]['#header_id'])) {
+              $variables['content']['regions']['#attributes']['aria-labelledby'] = $field_header[0]['#header_id'];
+            }
             $variables['content']['regions']['#layout_tag'] = 'section';
             $variables['content']['regions']['#header'] = $field_header;
           }
